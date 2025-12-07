@@ -2,10 +2,10 @@ import { Link } from "react-router-dom";
 
 export function NewsSection() {
   return (
-    <section className="my-8">
+    <section className="pt-8">
       <Link
         to="/ImportantNews"
-        className="block bg-linear-to-br from-blue-300 to-blue-600 rounded-2xl shadow-sm hover:shadow-lg transition-all duration-300 p-8 group"
+        className="block bg-linear-to-br container mx-auto from-blue-300 to-blue-600 rounded-2xl shadow-sm hover:shadow-lg transition-all duration-300 p-8 group"
       >
         <div className="flex items-center justify-between text-2xl">
           <div className="flex items-center gap-4">

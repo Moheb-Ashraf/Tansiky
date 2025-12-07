@@ -2,7 +2,7 @@ import { Link } from "react-router-dom"
 
 function Cards_home() {
     return (
-        <Link to="">
+        <Link to="/Universities">
             <div className="flex flex-col items-center justify-center p-6 bg-white border border-gray-100  rounded-3xl shadow-2xl w-64 h-48 cursor-pointer 
                 hover:scale-110 hover:shadow-md transition-all duration-300">
 

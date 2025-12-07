@@ -1,5 +1,5 @@
 import Cards_home from "../../Components/Cards_Home/Cards_home";
-import { NewsSection } from "../../Components/News/News";
+import { NewsSection } from "../../Components/NewsSection/NewsSection";
 
 function Home() {
   return (
@@ -11,10 +11,7 @@ function Home() {
       gap-10 justify-items-center">
         
         <Cards_home />
-        <Cards_home />
-        <Cards_home />
-        <Cards_home />
-        <Cards_home />
+        
         
 
       </div>

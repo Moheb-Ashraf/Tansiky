@@ -7,8 +7,17 @@ export default function Navbar() {
 
   const links = [
     { name: "الرئيسية", path: "/" },
-    { name: "الأخبار", path: "/ImportantNews" , child: "/ImportantNews/PageNews" },
-    { name: "أنواع الجامعات", path: "/TypeOfUniversities" },
+    { 
+    name: "الأخبار", 
+    path: "/ImportantNews",
+    child: ["/ImportantNews/PageNews"] 
+  },
+   {
+  name: " الجامعات",
+  path: "/TypeOfUniversities",
+  child: ["/UniversityPage", "/Universities"]
+}
+,
     { name: "بحث مخصص لك", path: "" }
   ];
 
@@ -21,11 +30,11 @@ export default function Navbar() {
           <div className="w-9 h-9 bg-blue-500 rounded-full flex items-center font-bold justify-center text-white text-3xl">
             🎓
           </div>
-          <h1 className="text-3xl font-bold text-gray-800">تنسيقي</h1>
+          <h1 className="text-xl md:text-2xl font-bold text-gray-800">تنسيقي</h1>
         </Link>
 
         {/* Links (Desktop) */}
-        <ul className="hidden md:flex items-center gap-8 text-gray-700 text-lg">
+        <ul className="hidden md:flex items-center gap-8 text-gray-700 text-md">
           {links.map((link) => (
             <li
               key={link.name}
@@ -37,7 +46,7 @@ export default function Navbar() {
                 <span
   className={`absolute -bottom-1 left-0 w-full h-0.5 bg-blue-500 transform transition-transform duration-300 ${
     location.pathname === link.path ||
-    location.pathname === link.child
+    (Array.isArray(link.child) && link.child.includes(location.pathname))
       ? "scale-x-100"
       : "scale-x-0"
   } origin-right`}
@@ -79,7 +88,8 @@ export default function Navbar() {
                   {link.name}
                   <span
                     className={`absolute -bottom-1 left-0 w-full h-0.5 bg-blue-500 transform transition-transform duration-300 ${
-                      location.pathname === link.path ? "scale-x-100" : "scale-x-0"
+                      location.pathname === link.path ||
+    (Array.isArray(link.child) && link.child.includes(location.pathname)) ? "scale-x-100" : "scale-x-0"
                     } origin-right`}
                   ></span>
                 </Link>
