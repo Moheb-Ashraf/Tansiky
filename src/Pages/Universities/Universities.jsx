@@ -15,7 +15,7 @@ export default function Universities() {
       setLoading(true);
 
       const { data } = await axios.get(
-        `/api/Universities/type/${type}`
+        `/api/proxy?path=api/Universities/type/${type}`
       );
 
       setUniversities(data);

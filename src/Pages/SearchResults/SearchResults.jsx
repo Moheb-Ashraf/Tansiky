@@ -22,7 +22,7 @@ export default function SearchResults() {
         
         const types = [1, 2, 3, 4, 5, 6];
         const requests = types.map(t => 
-          axios.get(`/api/Universities/type/${t}`).catch(e => ({ data: [] }))
+          axios.get(`/api/proxy?path=api/Universities/type/${t}`).catch(e => ({ data: [] }))
         );
 
         const responses = await Promise.all(requests);

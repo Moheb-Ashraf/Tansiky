@@ -51,7 +51,7 @@ export default function AdvancedSearch() {
         Object.entries(filters).filter(([_, v]) => v !== "")
       );
 
-      const { data } = await axios.get("/api/Universities/search", { params });
+      const { data } = await axios.get("/api/proxy?path=api/Universities/search", { params });
       setResults(data);
     } catch (error) {
       console.error("Search Error:", error);

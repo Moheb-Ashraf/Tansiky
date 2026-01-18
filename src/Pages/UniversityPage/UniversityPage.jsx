@@ -19,9 +19,9 @@ export default function UniversityPage({ type = "university" }) {
       setLoading(true);
       let apiUrl = "";
       
-      if (isUni) apiUrl = `/api/Universities/${id}`;
-      else if (isCollege) apiUrl = `/api/Universities/${uniId}/colleges`;
-      else if (isDept) apiUrl = `/api/Colleges/${collegeId}/departments`; 
+      if (isUni) apiUrl = `/api/proxy?path=api/Universities/${id}`;
+      else if (isCollege) apiUrl = `/api/proxy?path=api/Universities/${uniId}/colleges`;
+      else if (isDept) apiUrl = `/api/proxy?path=api/Colleges/${collegeId}/departments`; 
 
       const { data } = await axios.get(apiUrl);
 
