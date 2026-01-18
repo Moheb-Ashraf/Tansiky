@@ -26,7 +26,7 @@ export default function ImportantNews() {
 
 
   return (
-    <div className="min-h-screen bg-[#f4f7fb] py-10 px-4 md:px-8 lg:px-16 rtl">
+    <div className=" bg-[#f4f7fb] py-10 px-4 md:px-8 lg:px-16 rtl">
       <div className="max-w-7xl mx-auto ">
         {/* Header */}
         <div className="flex items-center  justify-between mb-8 ">

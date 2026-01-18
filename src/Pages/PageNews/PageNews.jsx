@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 function PageNews() {
     return <>
     
-    <div className="min-h-screen bg-[#F4F7FB] py-10 px-4">
+    <div className=" bg-[#F4F7FB] py-10 px-4">
         <div className=" container mx-auto   ">
 
           {/* العودة للرئيسية */}

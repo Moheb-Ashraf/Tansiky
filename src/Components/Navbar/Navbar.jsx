@@ -1,25 +1,42 @@
 import { useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
-  const location = useLocation(); // نستخدمه لتحديد الرابط النشط
+  const [searchTerm, setSearchTerm] = useState("");
+  const location = useLocation(); 
+  const navigate = useNavigate();
+
 
   const links = [
     { name: "الرئيسية", path: "/" },
     { 
-    name: "الأخبار", 
-    path: "/ImportantNews",
-    child: ["/ImportantNews/PageNews"] 
-  },
-   {
+      name: "الأخبار", 
+      path: "/ImportantNews",
+      child: ["/ImportantNews/PageNews"] 
+    },
+    {
   name: " الجامعات",
   path: "/TypeOfUniversities",
-  child: ["/UniversityPage", "/Universities"]
+  child: ["/Universities", "/university"]
 }
 ,
-    { name: "بحث مخصص لك", path: "" }
+    { name: "بحث مخصص لك", path: "/advanced-search" }
   ];
+
+  const isActive = (link) => {
+    if (location.pathname === link.path) return true;
+
+    if (Array.isArray(link.child)) {
+      return link.child.some(
+        (child) =>
+          location.pathname === child ||
+          location.pathname.startsWith(child + "/")
+      );
+    }
+
+    return false;
+  };
 
   return (
     <nav className="w-full bg-white shadow-md py-3 px-6">
@@ -44,14 +61,10 @@ export default function Navbar() {
                 {link.name}
                 {/* الخط تحت الكلمة النشطة */}
                 <span
-  className={`absolute -bottom-1 left-0 w-full h-0.5 bg-blue-500 transform transition-transform duration-300 ${
-    location.pathname === link.path ||
-    (Array.isArray(link.child) && link.child.includes(location.pathname))
-      ? "scale-x-100"
-      : "scale-x-0"
-  } origin-right`}
-/>
-
+                  className={`absolute -bottom-1 left-0 w-full h-0.5 bg-blue-500 transform transition-transform duration-300 ${
+                    isActive(link) ? "scale-x-100" : "scale-x-0"
+                  } origin-right`}
+                />
               </Link>
             </li>
           ))}
@@ -60,11 +73,22 @@ export default function Navbar() {
         {/* Search (Desktop) */}
         <div className="hidden md:flex w-64 bg-gray-100 rounded-full px-4 py-2 items-center transition-transform duration-200 hover:scale-105 hover:shadow-lg hover:shadow-blue-300">
           <input 
-            type="text"
-            className="bg-transparent flex-1 outline-none text-right text-sm"
-            placeholder="بحث..."
-          />
-          <i className="fa-solid fa-search text-gray-400 text-sm"></i>
+    type="text"
+    value={searchTerm}
+    onChange={(e) => setSearchTerm(e.target.value)}
+    className="bg-transparent flex-1 outline-none text-right text-sm"
+    placeholder="بحث..."
+  />
+  <button
+    onClick={() => {
+      if(searchTerm.trim() !== "") {
+        navigate(`/search?query=${encodeURIComponent(searchTerm)}`);
+      }
+    }}
+    className="bg-blue-500 text-white px-3 py-1 rounded-full hover:bg-blue-600 transition cursor-pointer"
+  >
+    بحث
+  </button>
         </div>
 
         {/* Hamburger Icon (Mobile) */}
@@ -86,23 +110,37 @@ export default function Navbar() {
               >
                 <Link to={link.path} className="block" onClick={() => setIsOpen(false)}>
                   {link.name}
+                  {/* الخط تحت الكلمة النشطة */}
                   <span
                     className={`absolute -bottom-1 left-0 w-full h-0.5 bg-blue-500 transform transition-transform duration-300 ${
-                      location.pathname === link.path ||
-    (Array.isArray(link.child) && link.child.includes(location.pathname)) ? "scale-x-100" : "scale-x-0"
+                      isActive(link) ? "scale-x-100" : "scale-x-0"
                     } origin-right`}
                   ></span>
                 </Link>
               </li>
             ))}
           </ul>
+
+          {/* Search (Mobile) */}
           <div className="w-full bg-gray-100 rounded-full px-4 py-2 flex items-center mt-2 transition-transform duration-200 hover:scale-105 hover:shadow-lg hover:shadow-blue-300">
             <input 
-              type="text"
-              className="bg-transparent flex-1 outline-none text-right text-sm"
-              placeholder="بحث..."
-            />
-            <i className="fa-solid fa-search text-gray-400 text-sm"></i>
+    type="text"
+    value={searchTerm}
+    onChange={(e) => setSearchTerm(e.target.value)}
+    className="bg-transparent flex-1 outline-none text-right text-sm"
+    placeholder="بحث..."
+  />
+  <button
+    onClick={() => {
+      if(searchTerm.trim() !== "") {
+        navigate(`/search?query=${encodeURIComponent(searchTerm)}`);
+        setIsOpen(false); 
+      }
+    }}
+    className="bg-blue-500 text-white px-3 py-1 rounded-full hover:bg-blue-600 transition cursor-pointer"
+  >
+    بحث
+  </button>
           </div>
         </div>
       )}
