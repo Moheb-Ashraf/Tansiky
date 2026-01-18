@@ -15,7 +15,7 @@ export default function Universities() {
       setLoading(true);
 
       const { data } = await axios.get(
-        `https://tansiqy.runasp.net/api/Universities/type/${type}`
+        `http://tansiqy.runasp.net/api/Universities/type/${type}`
       );
 
       setUniversities(data);

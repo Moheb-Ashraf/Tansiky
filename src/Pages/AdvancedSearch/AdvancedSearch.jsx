@@ -51,7 +51,7 @@ export default function AdvancedSearch() {
         Object.entries(filters).filter(([_, v]) => v !== "")
       );
 
-      const { data } = await axios.get("https://tansiqy.runasp.net/api/Universities/search", { params });
+      const { data } = await axios.get("http://tansiqy.runasp.net/api/Universities/search", { params });
       setResults(data);
     } catch (error) {
       console.error("Search Error:", error);
