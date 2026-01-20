@@ -7,9 +7,9 @@ export default function UniversityPage({ type = "university" }) {
   const [loading, setLoading] = useState(true);
   const [details, setDetails] = useState(null);
   
-  const { id, uniId, collegeId } = useParams(); 
+  const { id, uniId, collegeId } = useParams();
 
-  // type 
+  // type
   const isUni = type === "university";
   const isCollege = type === "college";
   const isDept = type === "department";
@@ -28,7 +28,6 @@ export default function UniversityPage({ type = "university" }) {
       if (isUni) {
         setDetails(data);
       } else {
-        // البحث داخل المصفوفة
         const foundItem = data.find(item => item.id === parseInt(id));
         setDetails(foundItem);
       }
@@ -89,7 +88,7 @@ export default function UniversityPage({ type = "university" }) {
             </h2>
             <div className="grid md:grid-cols-3 gap-4">
               {isUni ? (
-                // من جامعة إلى كلية
+                // from collage to faculty 
                 details.colleges?.map((item, index) => (
                   <Link to={`/college/${details.id}/${item.id}`} key={index} className="flex items-center justify-between p-3 border rounded-xl bg-gray-50 text-gray-700 hover:bg-blue-50 transition">
                     {item.nameAr}
@@ -97,15 +96,17 @@ export default function UniversityPage({ type = "university" }) {
                   </Link>
                 ))
               ) : (
-                // من كلية إلى قسم
+                
                 details.departments?.map((dept, index) => (
-                  <Link to={`/department/${details.id}/${dept.id}`} key={index} className="flex items-center justify-between p-3 border rounded-xl bg-gray-50 text-gray-700 hover:bg-green-50 transition">
+                  <div 
+                  key={index} 
+                  className="flex items-center justify-between p-3 border rounded-xl bg-gray-50 text-gray-700 transition">
                     <div>
                       <p className="font-bold">{dept.nameAr}</p>
                       <p className="text-xs text-gray-400">{dept.studyType === "Literary" ? "أدبي" : "علمي"}</p>
                     </div>
-                    <span className="text-green-500 text-xl">←</span>
-                  </Link>
+                    <span className="text-green-500 text-xl">✔</span>
+                  </div>
                 ))
               )}
             </div>
@@ -136,7 +137,11 @@ export default function UniversityPage({ type = "university" }) {
             </div>
             <div className="bg-white rounded-2xl shadow p-6 border border-gray-200">
               <h2 className="relative text-xl font-bold pb-2 mb-4 before:content-[''] before:absolute before:right-0 before:-bottom-0.5 before:w-full before:h-[3px] before:bg-blue-500 before:rounded-full">الموقع الرسمي</h2>
-              <a href={`https://${details.officialWebsite}`} target="_blank" rel="noopener noreferrer" className="text-blue-600 underline break-all"> {details.officialWebsite || "زيارة الرابط"}</a>
+              <a
+                href={details.officialWebsite.startsWith('http') ? details.officialWebsite : `https://${details.officialWebsite}`}  
+                target="_blank" 
+                rel="noopener noreferrer" 
+                className="text-blue-600 underline break-all"> {details.officialWebsite || "غير متوفر حاليا  "}</a>
             </div>
           </div>
         )}
