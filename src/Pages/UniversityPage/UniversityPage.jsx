@@ -138,7 +138,7 @@ export default function UniversityPage({ type = "university" }) {
             <div className="bg-white rounded-2xl shadow p-6 border border-gray-200">
               <h2 className="relative text-xl font-bold pb-2 mb-4 before:content-[''] before:absolute before:right-0 before:-bottom-0.5 before:w-full before:h-[3px] before:bg-blue-500 before:rounded-full">الموقع الرسمي</h2>
               <a
-                href={details.officialWebsite.startsWith('http') ? details.officialWebsite : `https://${details.officialWebsite}`}  
+                href={details.officialWebsite?.startsWith('http') ? details.officialWebsite : `https://${details.officialWebsite}`}  
                 target="_blank" 
                 rel="noopener noreferrer" 
                 className="text-blue-600 underline break-all"> {details.officialWebsite || "غير متوفر حاليا  "}</a>
