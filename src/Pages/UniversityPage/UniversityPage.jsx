@@ -27,6 +27,8 @@ export default function UniversityPage({ type = "university" }) {
 
       if (isUni) {
         setDetails(data);
+        console.log(data);
+        
       } else {
         const foundItem = data.find(item => item.id === parseInt(id));
         setDetails(foundItem);

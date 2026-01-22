@@ -19,10 +19,10 @@ export default function Universities() {
       );
 
       setUniversities(data);
-
-      // الحصول علي نوع الجامعة
+      
+      // type of university
       if (data.length > 0) {
-        setTypeName(data[0].type);
+        setTypeName(data[0].typeAr);
       }
 
     } catch (error) {
@@ -69,7 +69,7 @@ export default function Universities() {
               {/* المحافظة */}
               <div className="flex items-center gap-1 text-gray-500 mt-2 text-sm">
                 <i className="fa-solid fa-map w-4 h-4"></i>
-                {u.governorate}
+                {u.governorateAr}
               </div>
 
               {/* عدد الكليات */}
