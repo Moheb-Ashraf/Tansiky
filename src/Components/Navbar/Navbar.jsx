@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
+import logo from "../../images/tansiqy logo .pdf-image-001.jpg";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -45,7 +46,7 @@ export default function Navbar() {
         {/* Logo + Title */}
         <Link to="/" className="flex items-center gap-2 cursor-pointer">
           <div className="w-9 h-9 bg-blue-500 rounded-full flex items-center font-bold justify-center text-white text-3xl">
-            🎓
+            <img src={logo} alt="Logo" />
           </div>
           <h1 className="text-xl md:text-2xl font-bold text-gray-800">تنسيقي</h1>
         </Link>

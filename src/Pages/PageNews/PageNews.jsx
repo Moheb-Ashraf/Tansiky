@@ -47,10 +47,8 @@ function PageNews() {
     </p>
   </div>
 
-{/* الكارت الرئيسي */}
+{/* main card*/}
       <div className="bg-white w-full max-w-4xl rounded-3xl my-10 shadow-sm border border-gray-200 overflow-hidden">
-        
-        {/* المحتوى الداخلي مع الحواف الداخلية */}
         <div className="p-8 md:p-10">
           
           {/* رأس الكارت: العنوان والأيقونة */}
