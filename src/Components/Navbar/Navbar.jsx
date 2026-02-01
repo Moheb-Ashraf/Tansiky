@@ -60,7 +60,7 @@ export default function Navbar() {
             >
               <Link to={link.path} className="block">
                 {link.name}
-                {/* الخط تحت الكلمة النشطة */}
+                {/* line under the word */}
                 <span
                   className={`absolute -bottom-1 left-0 w-full h-0.5 bg-blue-500 transform transition-transform duration-300 ${
                     isActive(link) ? "scale-x-100" : "scale-x-0"

@@ -28,6 +28,7 @@ export default function UniversityPage({ type = "university" }) {
       if (isUni) {
         setDetails(data);
         
+        
       } else {
         const foundItem = data.find(item => item.id === parseInt(id));
         setDetails(foundItem);
@@ -62,7 +63,7 @@ export default function UniversityPage({ type = "university" }) {
             {isUni ? "🎓" : isCollege ? "🏫" : "📚"} 
           </div>
           <div>
-            <h1 className="text-2xl font-bold text-gray-800">{details.nameAr}</h1>
+            <h1 className="text-2xl font-bold text-gray-800">{details.nameAr} / {details.nameEn}</h1>
             <p className="text-gray-500 mt-2 text-sm">
               {isUni && `${details.collegesCount} كلية متاحة`}
               {isCollege && `${details.departmentsCount || 0} قسم متاح`}
@@ -118,7 +119,7 @@ export default function UniversityPage({ type = "university" }) {
         <div className="grid md:grid-cols-2 gap-6">
           <div className="bg-white rounded-2xl shadow p-6 border border-gray-200">
             <h2 className="relative text-xl font-bold pb-2 mb-4 before:content-[''] before:absolute before:right-0 before:-bottom-0.5 before:w-full before:h-[3px] before:bg-blue-500 before:rounded-full">المصاريف</h2>
-            <p className="text-gray-700 font-bold text-green-600">{details.fees?.toLocaleString() || "غير محدد"} جنيه</p>
+            <p className="font-bold text-green-600">{details.fees?.toLocaleString() || "غير محدد"} جنيه</p>
           </div>
           <div className="bg-white rounded-2xl shadow p-6 border border-gray-200">
             <h2 className="relative text-xl font-bold pb-2 mb-4 before:content-[''] before:absolute before:right-0 before:-bottom-0.5 before:w-full before:h-[3px] before:bg-blue-500 before:rounded-full">التنسيق</h2>

@@ -5,11 +5,12 @@ import Loading from "../../Components/Loading/Loading";
 
 export default function SearchResults() {
   const location = useLocation();
-  const query = new URLSearchParams(location.search).get("query")?.toLowerCase();
+  const query = new URLSearchParams(location.search).get("query");
   
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+
 
   useEffect(() => {
     if (!query) return;
@@ -18,47 +19,51 @@ export default function SearchResults() {
       try {
         setLoading(true);
         setError(null);
+        const { data } = await axios.get(`/api/proxy?path=api/Universities/search?searchTerm=${encodeURIComponent(query)}`);
+        const finalResults = [];
+        const lowerQuery = query.toLowerCase();
 
-        
-        const types = [1, 2, 3, 4, 5, 6];
-        const requests = types.map(t => 
-          axios.get(`/api/proxy?path=api/Universities/type/${t}`).catch(e => ({ data: [] }))
-        );
+        data.forEach(item => {
+          const matchesUni = 
+            item.nameAr?.toLowerCase().includes(lowerQuery) || 
+            item.nameEn?.toLowerCase().includes(lowerQuery);
 
-        const responses = await Promise.all(requests);
-        
-        // دمج كل الجامعات في مصفوفة واحدة كبيرة
-        const allUniversities = responses.flatMap(res => res.data);
-
-        const uniResults = [];
-        const collegeResults = [];
-        const deptResults = [];
-
-        allUniversities.forEach(u => {
-          // 1. البحث في اسم الجامعة
-          if (u.nameAr?.toLowerCase().includes(query)) {
-            uniResults.push({ id: u.id, nameAr: u.nameAr, type: "university" });
+          if (matchesUni) {
+            finalResults.push({
+            id: item.id,
+            displayTitle: item.nameAr,
+            subTitle: item.nameEn, 
+            typeLabel: "جامعة",
+            targetLink: `/university/${item.id}`,
+            badgeColor: "bg-blue-100 text-blue-700"
+          });
           }
 
-          // 2. البحث في الكليات
-          u.colleges?.forEach(c => {
-            if (c.nameAr?.toLowerCase().includes(query)) {
-              collegeResults.push({ id: c.id, nameAr: c.nameAr, type: "college", uniId: u.id });
-            }
+          item.colleges?.forEach(college => {
+            const matchesCollege = 
+              college.nameAr?.toLowerCase().includes(lowerQuery) || 
+              college.nameEn?.toLowerCase().includes(lowerQuery);
 
-            // 3. البحث في الأقسام
-            c.departments?.forEach(d => {
-              if (d.nameAr?.toLowerCase().includes(query)) {
-                deptResults.push({ id: d.id, nameAr: d.nameAr, type: "department", collegeId: c.id });
-              }
+            if (matchesCollege) {
+              finalResults.push({
+              id: college.id,
+              displayTitle: `${college.nameAr} - ${item.nameAr}`,
+              subTitle: college.nameEn,
+              typeLabel: "كلية",
+              targetLink: `/college/${item.id}/${college.id}`,
+              badgeColor: "bg-green-100 text-green-700"
             });
+            }
           });
         });
 
-        setResults([...uniResults, ...collegeResults, ...deptResults]);
+        // unique results
+        const uniqueResults = Array.from(new Map(finalResults.map(res => [res.displayTitle, res])).values());
+        setResults(uniqueResults);
+
       } catch (err) {
         console.error("Search Error:", err);
-        setError("فشل الاتصال بالسيرفر، يرجى المحاولة لاحقاً");
+        setError("فشل في جلب النتائج، يرجى المحاولة لاحقاً");
       } finally {
         setLoading(false);
       }
@@ -67,62 +72,42 @@ export default function SearchResults() {
     performSearch();
   }, [query]);
 
-  if (!query) return <div className="text-center py-20 text-gray-400">ابدأ البحث الآن...</div>;
+  if (!query) return <div className="text-center py-20 text-gray-400 font-sans">اكتب كلمة البحث للبدء...</div>;
   if (loading) return <Loading />;
   if (error) return <div className="text-center py-20 text-red-500 font-bold">{error}</div>;
 
   return (
-    <div className="container mx-auto p-6 min-h-screen" dir="rtl">
-      <h2 className="text-2xl font-bold mb-6 text-gray-800 border-b pb-4">
-        نتائج البحث عن: <span className="text-blue-600">"{query}"</span>
-      </h2>
+    <div className="container mx-auto p-6 " dir="rtl">
+      <div className="mb-10 text-right">
+        <h2 className="text-3xl font-black text-gray-800">
+          نتائج البحث عن: <span className="text-blue-600">"{query}"</span>
+        </h2>
+        <p className="text-gray-500 mt-2">عثرنا على {results.length} نتيجة</p>
+      </div>
       
       {results.length === 0 ? (
-        <div className="text-center py-10 text-gray-500 font-sans text-xl">
-          لا توجد نتائج تطابق بحثك.
+        <div className="bg-white rounded-3xl p-20 text-center shadow-sm border border-dashed border-gray-200">
+          <p className="text-xl text-gray-400">لا توجد نتائج تطابق "{query}". جرب كلمات بحث أبسط مثل "علوم" أو "هندسة".</p>
         </div>
       ) : (
-        <div className="grid gap-4">
-          {results.map((item, index) => {
-            let targetLink = "";
-            let typeLabel = "";
-            let badgeColor = "";
-
-            if (item.type === "university") {
-              targetLink = `/university/${item.id}`;
-              typeLabel = "جامعة";
-              badgeColor = "bg-blue-100 text-blue-700";
-            } else if (item.type === "college") {
-              targetLink = `/college/${item.uniId}/${item.id}`;
-              typeLabel = "كلية";
-              badgeColor = "bg-green-100 text-green-700";
-            } else {
-              targetLink = `/department/${item.collegeId}/${item.id}`;
-              typeLabel = "قسم";
-              badgeColor = "bg-purple-100 text-purple-700";
-            }
-
-            return (
-              <Link 
-                key={`${item.type}-${item.id}-${index}`} 
-                to={targetLink}
-                className="flex items-center justify-between p-4 bg-white border border-gray-100 rounded-2xl shadow-sm hover:shadow-md hover:border-blue-300 transition-all group"
-              >
-                <div className="flex items-center gap-4">
-                  <span className={`px-3 py-1 rounded-full text-xs font-bold ${badgeColor}`}>
-                    {typeLabel}
-                  </span>
-                  <span className="text-lg font-medium text-gray-700 group-hover:text-blue-600 transition-colors">
-                    {item.nameAr}
-                  </span>
-                </div>
-                <div className="flex items-center gap-2 text-gray-300 group-hover:text-blue-500">
-                  <span className="text-sm hidden md:inline">انتقال</span>
-                  <i className="fa-solid fa-chevron-left transition-transform group-hover:-translate-x-1"></i>
-                </div>
-              </Link>
-            );
-          })}
+        <div className="grid gap-4 max-w-4xl">
+          {results.map((item, index) => (
+            <Link 
+              key={index} 
+              to={item.targetLink}
+              className="flex items-center justify-between p-5 bg-white border border-gray-100 rounded-2xl shadow-sm hover:shadow-md hover:border-blue-300 transition-all group"
+            >
+              <div className="flex items-center gap-4">
+                <span className={`px-3 py-1 rounded-lg text-[10px] font-black uppercase ${item.badgeColor}`}>
+                  {item.typeLabel}
+                </span>
+                <span className="text-lg font-bold text-gray-700 group-hover:text-blue-600 transition-colors">
+                  {item.displayTitle}
+                </span>
+              </div>
+              <i className="fa-solid fa-chevron-left text-gray-300 group-hover:text-blue-500 transition-all"></i>
+            </Link>
+          ))}
         </div>
       )}
     </div>

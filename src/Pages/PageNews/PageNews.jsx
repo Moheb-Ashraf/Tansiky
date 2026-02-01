@@ -5,8 +5,6 @@ function PageNews() {
     
     <div className=" bg-[#F4F7FB] py-10 px-4">
         <div className=" container mx-auto   ">
-
-          {/* العودة للرئيسية */}
 <Link
     to="/"
     className="text-gray-600 hover:text-gray-900 flex items-center gap-2 mb-8"
@@ -20,10 +18,10 @@ function PageNews() {
 
   
 
-  {/* الكارد */}
+  {/* card */}
   <div className="w-full max-w-4xl bg-white rounded-3xl border border-gray-200 shadow-sm p-8">
 
-    {/* العنوان + الوسم + التاريخ */}
+    {/* title*/}
     <div className="flex items-center gap-3 mb-4">
       <span className="px-4 py-1 rounded-full bg-blue-50 text-blue-600 text-md">
         قبول وتسجيل
@@ -34,13 +32,9 @@ function PageNews() {
         ٢٥ نوفمبر ٢٠٢٥
       </span>
     </div>
-
-    {/* العنوان الرئيسي */}
     <h2 className="text-xl text-gray-800 font-semibold mb-3">
       فتح باب التقديم للجامعات الحكومية للعام الدراسي الجديد
     </h2>
-
-    {/* النص */}
     <p className="text-gray-600 leading-relaxed text-lg border-r-4 border-blue-500 pr-4">
       أعلنت وزارة التعليم العالي عن فتح باب التقديم للجامعات الحكومية بداية من
       الأسبوع القادم
@@ -51,10 +45,8 @@ function PageNews() {
       <div className="bg-white w-full max-w-4xl rounded-3xl my-10 shadow-sm border border-gray-200 overflow-hidden">
         <div className="p-8 md:p-10">
           
-          {/* رأس الكارت: العنوان والأيقونة */}
           <div className="flex items-center  gap-3 mb-8">
             <div className="w-10 h-10 bg-blue-100 text-2xl rounded-xl flex items-center justify-center text-blue-600">
-              {/* أيقونة تفاصيل الخبر  */}
               <i className="fa-solid fa-newspaper"></i>
             </div>
 
@@ -62,7 +54,6 @@ function PageNews() {
             
           </div>
 
-          {/* نص الخبر الأساسي */}
           <div className="space-y-4 text-gray-600 leading-relaxed text-md">
             <p>
               أعلنت وزارة التعليم العالي والبحث العلمي عن فتح باب التقديم الإلكتروني للجامعات الحكومية للعام الدراسي الجديد 2025-2026، وذلك بداية من الأسبوع القادم.
@@ -72,7 +63,6 @@ function PageNews() {
             </p>
           </div>
 
-          {/* قسم شروط التقديم */}
           <div className="mt-8">
             <h3 className="text-lg font-bold text-gray-800 mb-4">شروط التقديم</h3>
             <ul className="space-y-2 text-gray-600 text-md">
@@ -91,7 +81,6 @@ function PageNews() {
             </ul>
           </div>
 
-          {/* قسم المواعيد المهمة */}
           <div className="mt-8">
             <h3 className="text-lg font-bold text-gray-800 mb-4">المواعيد المهمة</h3>
             <div className="space-y-2 text-gray-600 text-md">
@@ -109,8 +98,6 @@ function PageNews() {
               </div>
             </div>
           </div>
-
-          {/* الخاتمة */}
           <div className="mt-8 text-gray-600 leading-relaxed text-lg">
             <p>
               ودعا الوزير جميع الطلاب إلى الاطلاع على دليل التنسيق المتاح على الموقع الإلكتروني، والذي يتضمن كافة التفاصيل المتعلقة بالقبول والتخصصات المتاحة في كل جامعة.

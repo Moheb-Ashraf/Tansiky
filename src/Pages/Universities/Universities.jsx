@@ -57,8 +57,8 @@ export default function Universities() {
 
               {/* عنوان الجامعة */}
               <div className="flex justify-between items-start">
-                <h2 className="text-lg font-bold text-gray-800">
-                  {u.nameAr}
+                <h2 className="text-lg font-bold text-gray-800 line-clamp-2 ">
+                  {u.nameAr} / {u.nameEn}
                 </h2>
 
                 <div className="bg-green-100 text-green-600 p-2 rounded-xl">
