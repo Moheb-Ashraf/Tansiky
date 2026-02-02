@@ -19,7 +19,7 @@ export default function Navbar() {
     {
   name: " الجامعات",
   path: "/TypeOfUniversities",
-  child: ["/Universities", "/university"]
+  child: ["/Universities", "/university", "/Institutes", "/InstituteDetails"]
 }
 ,
     { name: "بحث مخصص لك", path: "/advanced-search" }
@@ -40,7 +40,7 @@ export default function Navbar() {
   };
 
   return (
-    <nav className="w-full bg-white shadow-md py-3 px-6">
+    <nav className="w-full bg-white shadow-md py-3 px-6 ">
       <div className="container mx-auto flex items-center justify-between">
         
         {/* Logo + Title */}
@@ -111,7 +111,7 @@ export default function Navbar() {
               >
                 <Link to={link.path} className="block" onClick={() => setIsOpen(false)}>
                   {link.name}
-                  {/* الخط تحت الكلمة النشطة */}
+                  {/* line */}
                   <span
                     className={`absolute -bottom-1 left-0 w-full h-0.5 bg-blue-500 transform transition-transform duration-300 ${
                       isActive(link) ? "scale-x-100" : "scale-x-0"

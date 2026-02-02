@@ -79,7 +79,7 @@ export default function UniversityPage({ type = "university" }) {
           </h2>
             <div>
               <p
-                className={`text-gray-600 leading-relaxed text-base transition-all duration-300 ${
+                className={`text-gray-600 leading-relaxed text-base transition-all duration-300 whitespace-pre-line ${
                   expanded ? "" : "line-clamp-1"
                 }`}
               >
@@ -88,7 +88,7 @@ export default function UniversityPage({ type = "university" }) {
 
               <button
                 onClick={() => setExpanded(!expanded)}
-                className="text-blue-600 font-semibold mt-1 hover:underline"
+                className="text-blue-600 font-semibold mt-1 hover:underline cursor-pointer"
               >
                 {expanded ? "عرض أقل" : "عرض المزيد"}
               </button>

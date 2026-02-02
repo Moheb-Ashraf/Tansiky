@@ -4,6 +4,8 @@ import Navbar from "./Components/Navbar/Navbar";
 import AdvancedSearch from "./Pages/AdvancedSearch/AdvancedSearch";
 import Home from "./Pages/Home/Home";
 import ImportantNews from "./Pages/ImportantNews/ImportantNews";
+import InstituteDetails from "./Pages/InstituteDetails/InstituteDetails";
+import InstitutesList from "./Pages/InstitutesList/InstitutesList";
 import PageNews from "./Pages/PageNews/PageNews";
 import SearchResults from "./Pages/SearchResults/SearchResults";
 import TypeOfUniversities from "./Pages/TypeOfUniversities/TypeOfUniversities";
@@ -24,6 +26,8 @@ function App() {
         <Route path="/university/:id" element={<UniversityPage type="university" />} />
         <Route path="/college/:uniId/:id" element={<UniversityPage type="college" />} />
         <Route path="/department/:collegeId/:id" element={<UniversityPage type="department" />} />
+        <Route path="/Institutes" element={<InstitutesList />} />
+        <Route path="/InstituteDetails/:id" element={<InstituteDetails />} />
         <Route path="/search" element={<SearchResults />} />
         <Route path="/advanced-search" element={<AdvancedSearch/>} />
       </Routes>
