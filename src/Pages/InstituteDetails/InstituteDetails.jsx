@@ -20,14 +20,14 @@ export default function InstituteDetails() {
       setLoading(true);
       
       // 1. Get main institute data
-      const res = await axios.get(`http://tansiqy.runasp.net/api/Universities/${id}`);
+      const res = await axios.get(`/api/proxy?path=api/Universities/${id}`);
       const instituteData = res.data;
       setDetails(instituteData);
 
       // 2. Fetch departments for each college automatically
       if (instituteData.colleges && instituteData.colleges.length > 0) {
         const deptPromises = instituteData.colleges.map((col) =>
-          axios.get(`http://tansiqy.runasp.net/api/Colleges/${col.id}`).catch(() => null)
+          axios.get(`/api/proxy?path=api/Colleges/${col.id}`).catch(() => null)
         );
 
         const responses = await Promise.all(deptPromises);

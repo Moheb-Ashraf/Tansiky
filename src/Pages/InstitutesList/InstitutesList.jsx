@@ -11,7 +11,7 @@ export default function InstitutesList() {
   async function getInstitutes() {
     try {
       setLoading(true);
-      const { data } = await axios.get(`http://tansiqy.runasp.net/api/Universities/type/4`);
+      const { data } = await axios.get(`/api/proxy?path=api/Universities/type/4`);
       setInstitutes(data);
     } catch (error) {
       console.error(error);
