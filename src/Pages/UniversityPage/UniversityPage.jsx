@@ -6,9 +6,9 @@ import Loading from "../../Components/Loading/Loading";
 export default function UniversityPage({ type = "university" }) {
   const [loading, setLoading] = useState(true);
   const [details, setDetails] = useState(null);
-  
   const { id, uniId, collegeId } = useParams();
 
+   const [expanded, setExpanded] = useState(false);
   // type
   const isUni = type === "university";
   const isCollege = type === "college";
@@ -77,9 +77,22 @@ export default function UniversityPage({ type = "university" }) {
           <h2 className="relative text-xl font-bold pb-2 mb-4 before:content-[''] before:absolute before:right-0 before:-bottom-0.5 before:w-full before:h-[3px] before:bg-blue-500 before:rounded-full">
             نبذة عن {isUni ? "الجامعة" : isCollege ? "الكلية" : "القسم"}
           </h2>
-          <p className="text-gray-600 leading-relaxed text-base">
-            {details.description || "لا يوجد وصف تفصيلي متاح حالياً."}
-          </p>
+            <div>
+              <p
+                className={`text-gray-600 leading-relaxed text-base transition-all duration-300 ${
+                  expanded ? "" : "line-clamp-1"
+                }`}
+              >
+                {details?.description || "لا يوجد وصف تفصيلي متاح حالياً."}
+              </p>
+
+              <button
+                onClick={() => setExpanded(!expanded)}
+                className="text-blue-600 font-semibold mt-1 hover:underline"
+              >
+                {expanded ? "عرض أقل" : "عرض المزيد"}
+              </button>
+            </div>
         </div>
 
         {/* Categories Section */}
