@@ -2,6 +2,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Loading from "../../Components/Loading/Loading";
+import { Helmet } from "react-helmet-async";
 
 export default function InstitutesList() {
   const [institutes, setInstitutes] = useState([]);
@@ -25,6 +26,15 @@ export default function InstitutesList() {
   if (loading) return <Loading />;
 
   return (
+    <>
+    
+    {/* SEO */}
+    <Helmet>
+        <title>دليل المعاهد العليا المعتمدة | تنسيقي ايجي</title>
+        <meta name="description" content="تصفح قائمة المعاهد العليا المعتمدة في مصر، تعرف على تنسيق العام الماضي، التخصصات المتاحة والمواقع الجغرافية لكل معهد." />
+        <meta name="keywords" content="معاهد عليا، تنسيق المعاهد، معهد هندسة، معهد حاسبات، تنسيقي ايجي، معاهد معتمدة" />
+      </Helmet>
+
     <div className="w-full bg-[#fffcf5] min-h-screen p-6" dir="rtl">
       <div className="container mx-auto">
         {/* Page Header */}
@@ -54,12 +64,13 @@ export default function InstitutesList() {
 
               <div className="bg-amber-50 px-4 py-2 rounded-2xl text-center min-w-[100px]">
                 <p className="text-[10px] text-amber-600 font-bold uppercase">التنسيق</p>
-                <p className="text-2xl font-black text-amber-600 font-sans">{inst.lastYearCoordination}%</p>
+                <p className="text-2xl font-black text-amber-600 font-sans">{inst.lastYearCoordination ? `${inst.lastYearCoordination}%` : '---'}</p>
               </div>
             </Link>
           ))}
         </div>
       </div>
     </div>
+    </>
   );
 }

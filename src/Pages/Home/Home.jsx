@@ -1,5 +1,7 @@
 import Cards_home from "../../Components/Cards_Home/Cards_home";
 import { NewsSection } from "../../Components/NewsSection/NewsSection";
+import { Helmet } from "react-helmet-async";
+
 
 function Home() {
 
@@ -15,6 +17,15 @@ const Universities = [
 
   return (
     <>
+
+      {/* SEO Optimization for Home Page */}
+      <Helmet>
+        <title>تنسيقي ايجي | دليل تنسيق الجامعات والكليات والمعاهد المصرية</title>
+        <meta name="description" content="تنسيقي ايجي هو دليلك الشامل لمعرفة تنسيق ومصاريف الجامعات الحكومية والخاصة والأهلية والمعاهد في مصر. ابحث عن الأقسام المتاحة ومعايير القبول." />
+        <meta name="keywords" content="تنسيق الجامعات, تنسيق الكليات, مصاريف الجامعات, كليات مصر, تنسيقي ايجي" />
+      </Helmet>
+
+
       <div className=" bg-[#f4f7fb]">
         <NewsSection />
       <div className="container mx-auto mt-10 pb-10

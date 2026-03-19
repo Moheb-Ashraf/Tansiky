@@ -2,6 +2,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import Loading from "../../Components/Loading/Loading";
+import { Helmet } from "react-helmet-async";
 
 export default function InstituteDetails() {
   const { id } = useParams();
@@ -58,6 +59,14 @@ export default function InstituteDetails() {
   const mapUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(details.nameAr + " " + (details.location || ""))}`;
 
   return (
+    <>
+
+    <Helmet>
+        <title>{details.nameAr} | تنسيقي ايجي</title>
+        <meta name="description" content={`تعرف على أقسام، مصاريف، وتنسيق ${details.nameAr}. معلومات شاملة عن نظام الدراسة والموقع الجغرافي.`} />
+        <meta name="keywords" content={`${details.nameAr}, تنسيق المعاهد، مصاريف المعهد، أقسام المعهد، تنسيقي ايجي`} />
+      </Helmet>
+    
     <div className="w-full min-h-screen bg-[#fffcf5] pb-20 font-sans text-right" dir="rtl">
       
       {/* Header Section */}
@@ -199,5 +208,6 @@ export default function InstituteDetails() {
 
       </div>
     </div>
+    </>
   );
 }

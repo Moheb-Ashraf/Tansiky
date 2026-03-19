@@ -42,7 +42,7 @@ function TypeOfUniversities() {
           <Cards_home
             key={index}
             title={item.name}
-            link={`/Universities/${item.type}`}
+            link={item.type === 4 ? `/Institutes` : `/Universities/${item.type}`}
             color={item.color}
           />
         ))

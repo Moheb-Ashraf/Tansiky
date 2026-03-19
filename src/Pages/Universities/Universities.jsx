@@ -2,6 +2,8 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import Loading from "../../Components/Loading/Loading";
+import { Helmet } from "react-helmet-async"; 
+
 
 export default function Universities() {
   const { type } = useParams();
@@ -41,7 +43,15 @@ export default function Universities() {
   }
 
   return (
-    <div className="w-full bg-[#f7f9fc]  p-6">
+    <>
+
+    {/* SEO Optimization */}
+    <Helmet>
+        <title>{typeName} | تنسيقي ايجي</title>
+        <meta name="description" content={`استكشف قائمة جميع ${typeName} في مصر، تعرف على الكليات المتاحة والمحافظات ومصاريف القبول.`} />
+      </Helmet>
+
+    <div className="w-full bg-[#f7f9fc] min-h-screen p-6">
 
       {/* عنوان الصفحة */}
       <h1 className="text-2xl font-bold text-start text-gray-800 mb-6">
@@ -82,5 +92,6 @@ export default function Universities() {
         ))}
       </div>
     </div>
+    </>
   );
 }
