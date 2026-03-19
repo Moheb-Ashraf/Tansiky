@@ -15,7 +15,7 @@ export default function Universities() {
       setLoading(true);
 
       const { data } = await axios.get(
-        `/api/proxy?path=api/Universities/type/${type}`
+        `/api/Universities/type/${type}`
       );
 
       setUniversities(data);
@@ -41,7 +41,7 @@ export default function Universities() {
   }
 
   return (
-    <div className="w-full bg-[#f7f9fc] min-h-screen p-6">
+    <div className="w-full bg-[#f7f9fc]  p-6">
 
       {/* عنوان الصفحة */}
       <h1 className="text-2xl font-bold text-start text-gray-800 mb-6">

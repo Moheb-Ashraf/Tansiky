@@ -11,16 +11,18 @@ import SearchResults from "./Pages/SearchResults/SearchResults";
 import TypeOfUniversities from "./Pages/TypeOfUniversities/TypeOfUniversities";
 import Universities from "./Pages/Universities/Universities";
 import UniversityPage from "./Pages/UniversityPage/UniversityPage";
+import ScrollToTop from "./Components/ScrollToTop/ScrollToTop.jsx";
 
 
 function App() {
   return (
     <Router>
+            <ScrollToTop /> 
       <Navbar />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/ImportantNews" element={<ImportantNews />} />
-        <Route path="/ImportantNews/PageNews" element={<PageNews />} />
+        <Route path="/ImportantNews/PageNews/:id" element={<PageNews />} />
         <Route path="/TypeOfUniversities" element={<TypeOfUniversities />} />
         <Route path="/Universities/:type" element={<Universities />} />
         <Route path="/university/:id" element={<UniversityPage type="university" />} />

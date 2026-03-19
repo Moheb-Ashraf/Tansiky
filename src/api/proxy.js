@@ -1,12 +1,26 @@
 import axios from "axios";
 
 export default async function handler(req, res) {
-  const { path } = req.query; // هنا سيأخذ "api/Universities/type/2"
+  // Extract path and spread the rest of query parameters into 'otherParams'
+  const { path, ...otherParams } = req.query; 
+
+  if (!path) {
+    return res.status(400).json({ error: "Path parameter is required" });
+  }
 
   try {
-    const apiRes = await axios.get(`http://tansiqy.runasp.net/${path}`);
+    // Send the request with the extracted path and pass the otherParams (like searchTerm)
+    const apiRes = await axios.get(`https://tansiqy.runasp.net/${path}`, {
+      params: otherParams // This will forward things like &searchTerm=...
+    });
+
     res.status(200).json(apiRes.data);
   } catch (err) {
-    res.status(500).json({ error: "Proxy Error", details: err.message });
+    // Forward the specific error status if possible, otherwise 500
+    const statusCode = err.response?.status || 500;
+    res.status(statusCode).json({ 
+      error: "Proxy Error", 
+      details: err.response?.data || err.message 
+    });
   }
 }

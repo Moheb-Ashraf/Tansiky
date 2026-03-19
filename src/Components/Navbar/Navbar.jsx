@@ -1,13 +1,12 @@
 import { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import logo from "../../images/tansiqy logo .pdf-image-001.jpg";
+import logo from "../../images/logo.png";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const location = useLocation(); 
   const navigate = useNavigate();
-
 
   const links = [
     { name: "الرئيسية", path: "/" },
@@ -17,11 +16,10 @@ export default function Navbar() {
       child: ["/ImportantNews/PageNews"] 
     },
     {
-  name: " الجامعات",
-  path: "/TypeOfUniversities",
-  child: ["/Universities", "/university", "/Institutes", "/InstituteDetails"]
-}
-,
+      name: " الجامعات",
+      path: "/TypeOfUniversities",
+      child: ["/Universities", "/university", "/Institutes", "/InstituteDetails","/college"]
+    },
     { name: "بحث مخصص لك", path: "/advanced-search" }
   ];
 
@@ -39,8 +37,16 @@ export default function Navbar() {
     return false;
   };
 
+  const handleSearch = (e) => {
+    if (e) e.preventDefault();
+    if (searchTerm.trim() !== "") {
+      navigate(`/search?query=${encodeURIComponent(searchTerm.trim())}`);
+      setIsOpen(false);
+    }
+  };
+
   return (
-    <nav className="w-full bg-white shadow-md py-3 px-6 ">
+    <nav className="w-full bg-white shadow-md py-3 px-6 sticky top-0 z-50">
       <div className="container mx-auto flex items-center justify-between">
         
         {/* Logo + Title */}
@@ -48,7 +54,7 @@ export default function Navbar() {
           <div className="w-9 h-9 bg-blue-500 rounded-full flex items-center font-bold justify-center text-white text-3xl">
             <img src={logo} alt="Logo" />
           </div>
-          <h1 className="text-xl md:text-2xl font-bold text-gray-800">تنسيقي</h1>
+          <h1 className="text-xl md:text-2xl font-bold text-gray-800">تنسيقي ايجي</h1>
         </Link>
 
         {/* Links (Desktop) */}
@@ -72,37 +78,36 @@ export default function Navbar() {
         </ul>
 
         {/* Search (Desktop) */}
-        <div className="hidden md:flex w-64 bg-gray-100 rounded-full px-4 py-2 items-center transition-transform duration-200 hover:scale-105 hover:shadow-lg hover:shadow-blue-300">
+        <form 
+          onSubmit={handleSearch}
+          className="hidden md:flex w-64 bg-gray-100 rounded-full px-4 py-2 items-center transition-transform duration-200 hover:scale-105 hover:shadow-lg hover:shadow-blue-300"
+        >
           <input 
-    type="text"
-    value={searchTerm}
-    onChange={(e) => setSearchTerm(e.target.value)}
-    className="bg-transparent flex-1 outline-none text-right text-sm"
-    placeholder="بحث..."
-  />
-  <button
-    onClick={() => {
-      if(searchTerm.trim() !== "") {
-        navigate(`/search?query=${encodeURIComponent(searchTerm)}`);
-      }
-    }}
-    className="bg-blue-500 text-white px-3 py-1 rounded-full hover:bg-blue-600 transition cursor-pointer"
-  >
-    بحث
-  </button>
-        </div>
+            type="text"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="bg-transparent flex-1 outline-none text-right text-sm"
+            placeholder="بحث..."
+          />
+          <button
+            type="submit"
+            className="bg-blue-500 text-white px-3 py-1 rounded-full hover:bg-blue-600 transition cursor-pointer"
+          >
+            بحث
+          </button>
+        </form>
 
         {/* Hamburger Icon (Mobile) */}
         <div className="md:hidden flex items-center">
           <button onClick={() => setIsOpen(!isOpen)}>
-            <i className="fa-solid fa-bars text-gray-700 text-xl"></i>
+            <i className={`fa-solid ${isOpen ? 'fa-xmark' : 'fa-bars'} text-gray-700 text-xl`}></i>
           </button>
         </div>
       </div>
 
       {/* Mobile Menu */}
       {isOpen && (
-        <div className="md:hidden mt-2 px-4 space-y-2">
+        <div className="md:hidden mt-2 px-4 space-y-2 pb-4">
           <ul className="flex flex-col gap-2 text-center text-gray-700 text-lg">
             {links.map((link) => (
               <li
@@ -123,26 +128,24 @@ export default function Navbar() {
           </ul>
 
           {/* Search (Mobile) */}
-          <div className="w-full bg-gray-100 rounded-full px-4 py-2 flex items-center mt-2 transition-transform duration-200 hover:scale-105 hover:shadow-lg hover:shadow-blue-300">
+          <form 
+            onSubmit={handleSearch}
+            className="w-full bg-gray-100 rounded-full px-4 py-2 flex items-center mt-2 transition-transform duration-200 hover:scale-105 hover:shadow-lg hover:shadow-blue-300"
+          >
             <input 
-    type="text"
-    value={searchTerm}
-    onChange={(e) => setSearchTerm(e.target.value)}
-    className="bg-transparent flex-1 outline-none text-right text-sm"
-    placeholder="بحث..."
-  />
-  <button
-    onClick={() => {
-      if(searchTerm.trim() !== "") {
-        navigate(`/search?query=${encodeURIComponent(searchTerm)}`);
-        setIsOpen(false); 
-      }
-    }}
-    className="bg-blue-500 text-white px-3 py-1 rounded-full hover:bg-blue-600 transition cursor-pointer"
-  >
-    بحث
-  </button>
-          </div>
+              type="text"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="bg-transparent flex-1 outline-none text-right text-sm"
+              placeholder="بحث..."
+            />
+            <button
+              type="submit"
+              className="bg-blue-500 text-white px-3 py-1 rounded-full hover:bg-blue-600 transition cursor-pointer"
+            >
+              بحث
+            </button>
+          </form>
         </div>
       )}
     </nav>

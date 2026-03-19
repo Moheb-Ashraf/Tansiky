@@ -29,20 +29,38 @@ export default function AdvancedSearch() {
 
   const studyTypes = [
     { id: 1, name: "علمي رياضة" }, { id: 2, name: "علمي علوم" },
-    { id: 3, name: "أدبي" }, { id: 4, name: "صناعي" }, { id: 5, name: "أمريكي" }
+    { id: 3, name: "أدبي" }, { id: 4, name: "صناعي" }, { id: 5, name: "أمريكي" } , { id: 6, name: "كل الشعب" }
   ];
-
   const governorates = [
-    { id: 1, name: "القاهرة" }, { id: 2, name: "الجيزة" }, { id: 3, name: "الإسكندرية" },
-    { id: 4, name: "الدقهلية" }, { id: 5, name: "البحر الأحمر" }, { id: 6, name: "البحيرة" },
-    { id: 7, name: "الفيوم" }, { id: 8, name: "الغربية" }, { id: 9, name: "الإسماعيلية" },
-    { id: 10, name: "المنوفية" }, { id: 11, name: "المنيا" }, { id: 12, name: "القليوبية" },
-    { id: 13, name: "الوادي الجديد" }, { id: 14, name: "السويس" }, { id: 15, name: "الشرقية" },
-    { id: 16, name: "دمياط" }, { id: 17, name: "بني سويف" }, { id: 18, name: "أسوان" },
-    { id: 19, name: "أسيوط" }, { id: 20, name: "سوهاج" }, { id: 21, name: "قنا" },
-    { id: 22, name: "شمال سيناء" }, { id: 23, name: "جنوب سيناء" }, { id: 24, name: "كفر الشيخ" },
-    { id: 25, name: "مطروح" }, { id: 26, name: "الأقصر" }, { id: 27, name: "بورسعيد" }
-  ];
+  { id: 1, name: "القاهرة" },
+  { id: 2, name: "الإسكندرية" },
+  { id: 3, name: "الجيزة" },
+  { id: 4, name: "الشرقية" },
+  { id: 5, name: "الدقهلية" },
+  { id: 6, name: "البحيرة" },
+  { id: 7, name: "المنوفية" },
+  { id: 8, name: "الغربية" },
+  { id: 9, name: "كفر الشيخ" },
+  { id: 10, name: "القليوبية" },
+  { id: 11, name: "بني سويف" },
+  { id: 12, name: "الفيوم" },
+  { id: 13, name: "المنيا" },
+  { id: 14, name: "أسيوط" },
+  { id: 15, name: "سوهاج" },
+  { id: 16, name: "قنا" },
+  { id: 17, name: "الأقصر" },
+  { id: 18, name: "أسوان" },
+  { id: 19, name: "البحر الأحمر" },
+  { id: 20, name: "الوادي الجديد" },
+  { id: 21, name: "مطروح" },
+  { id: 22, name: "شمال سيناء" },
+  { id: 23, name: "جنوب سيناء" },
+  { id: 24, name: "بورسعيد" },
+  { id: 25, name: "الإسماعيلية" },
+  { id: 26, name: "السويس" },
+  { id: 27, name: "دمياط" }
+];
+
 
   // 2. Search logic
   const handleSearch = async (e) => {
@@ -62,12 +80,14 @@ export default function AdvancedSearch() {
         }
       });
 
+      
+
       // Format query string
       const queryString = new URLSearchParams(cleanFilters).toString();
-      const apiPath = `api/Universities/search?${queryString}`;
+      const apiPath = `api/Universities/search/intelligent?${queryString}`;
 
       // API call via proxy
-      const { data } = await axios.get(`/api/proxy?path=${encodeURIComponent(apiPath)}`);
+      const { data } = await axios.get(`${encodeURIComponent(apiPath)}`);
       setResults(data);
 
     } catch (error) {

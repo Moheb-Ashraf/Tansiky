@@ -10,7 +10,6 @@ export default function InstituteDetails() {
   const [loading, setLoading] = useState(true);
   const [expanded, setExpanded] = useState(false);
 
-  
   // State for sub-departments data
   const [allDepartments, setAllDepartments] = useState({}); 
 
@@ -19,15 +18,15 @@ export default function InstituteDetails() {
     try {
       setLoading(true);
       
-      // 1. Get main institute data
-      const res = await axios.get(`/api/proxy?path=api/Universities/${id}`);
+      // 1. Get main institute data via Vite Proxy
+      const res = await axios.get(`/api/Universities/${id}`);
       const instituteData = res.data;
       setDetails(instituteData);
 
       // 2. Fetch departments for each college automatically
       if (instituteData.colleges && instituteData.colleges.length > 0) {
         const deptPromises = instituteData.colleges.map((col) =>
-          axios.get(`/api/proxy?path=api/Colleges/${col.id}`).catch(() => null)
+          axios.get(`/api/Colleges/${col.id}`).catch(() => null)
         );
 
         const responses = await Promise.all(deptPromises);
@@ -49,7 +48,9 @@ export default function InstituteDetails() {
     }
   }
 
-  useEffect(() => { getData(); }, [id]);
+  useEffect(() => { 
+    getData(); 
+  }, [id]);
 
   if (loading) return <Loading />;
   if (!details) return <div className="text-center py-20 font-sans">No data found</div>;
@@ -60,7 +61,7 @@ export default function InstituteDetails() {
     <div className="w-full min-h-screen bg-[#fffcf5] pb-20 font-sans text-right" dir="rtl">
       
       {/* Header Section */}
-      <div className="bg-linear-to-r from-amber-500 to-orange-600 pt-10 pb-24 px-4 shadow-lg">
+      <div className="bg-gradient-to-r from-amber-500 to-orange-600 pt-10 pb-24 px-4 shadow-lg">
         <div className="container mx-auto max-w-5xl">
           <button onClick={() => navigate(-1)} className="text-white/90 hover:text-white mb-6 flex items-center gap-2 font-bold cursor-pointer">
             <i className="fa-solid fa-arrow-right"></i> العودة للقائمة
@@ -94,7 +95,7 @@ export default function InstituteDetails() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {details.colleges?.map((item) => (
-              <div key={item.id} className="bg-white rounded-4xl p-6 shadow-sm border border-amber-100 flex flex-col hover:shadow-xl hover:border-amber-400 transition-all duration-300">
+              <div key={item.id} className="bg-white rounded-[2rem] p-6 shadow-sm border border-amber-100 flex flex-col hover:shadow-xl hover:border-amber-400 transition-all duration-300">
                 
                 {/* College Info */}
                 <div className="flex justify-between items-start mb-4">
@@ -128,11 +129,11 @@ export default function InstituteDetails() {
                 {/* Fees and Coordination Footer */}
                 <div className="mt-auto grid grid-cols-2 gap-3 pt-5 border-t border-slate-50 font-sans">
                    <div className="bg-slate-50 p-3 rounded-2xl flex flex-col items-center">
-                      <p className="text-sm text-slate-400 font-bold mb-1 uppercase"> المصاريف للعام الماضي</p>
+                      <p className="text-[10px] text-slate-400 font-bold mb-1 uppercase">المصاريف</p>
                       <p className="text-lg font-black text-emerald-600">{item.fees?.toLocaleString()} ج.م</p>
                    </div>
                    <div className="bg-slate-50 p-3 rounded-2xl flex flex-col items-center">
-                      <p className="text-sm text-slate-400 font-bold mb-1 uppercase">التنسيق بالنسبة للعام الماضي </p>
+                      <p className="text-[10px] text-slate-400 font-bold mb-1 uppercase">تنسيق العام الماضي</p>
                       <p className="text-lg font-black text-amber-600">{item.lastYearCoordination || details.lastYearCoordination}%</p>
                    </div>
                 </div>
@@ -155,12 +156,14 @@ export default function InstituteDetails() {
                 {details?.description || "لا يوجد وصف تفصيلي متاح حالياً."}
               </p>
 
-              <button
-                onClick={() => setExpanded(!expanded)}
-                className="text-blue-600 font-semibold mt-1 hover:underline cursor-pointer"
-              >
-                {expanded ? "عرض أقل" : "عرض المزيد"}
-              </button>
+              {details?.description && details.description.length > 150 && (
+                <button
+                  onClick={() => setExpanded(!expanded)}
+                  className="text-blue-600 font-bold mt-2 hover:underline cursor-pointer"
+                >
+                  {expanded ? "عرض أقل" : "عرض المزيد"}
+                </button>
+              )}
             </div>
         </div>
 
@@ -171,7 +174,7 @@ export default function InstituteDetails() {
                 <h3 className="text-xl font-bold mb-2 flex items-center gap-2">
                   <i className="fa-solid fa-globe text-blue-400"></i> الموقع الإلكتروني
                 </h3>
-                <p className="text-slate-400 text-sm mb-6 font-sans italic">{details.officialWebsite || "Not available"}</p>
+                <p className="text-slate-400 text-sm mb-6 font-sans italic">{details.officialWebsite || "غير متوفر"}</p>
               </div>
               <a href={details.officialWebsite?.startsWith('http') ? details.officialWebsite : `https://${details.officialWebsite}`} 
                  target="_blank" rel="noreferrer" 
@@ -189,7 +192,7 @@ export default function InstituteDetails() {
                 <p className="text-slate-500 text-sm mb-6 italic">{details.governorateAr} - {details.location}</p>
               </div>
               <a href={mapUrl} target="_blank" rel="noreferrer" className="block text-center border-2 border-gray-800 text-gray-800 hover:bg-gray-800 hover:text-white py-4 rounded-2xl font-bold transition-all uppercase tracking-widest text-xs">
-                 Open Map
+                 فتح الخريطة
               </a>
            </div>
         </div>

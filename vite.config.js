@@ -9,16 +9,12 @@ export default defineConfig({
   ],
   server: {
     proxy: {
-      '/api/proxy': {
+      // Direct proxy: any request starting with /api will go to the target
+      '/api': {
         target: 'http://tansiqy.runasp.net',
         changeOrigin: true,
-        rewrite: (path) => {
-          let originalPath = path.replace(/^\/api\/proxy\?path=/, '');
-          if (originalPath.includes('&')) {
-             originalPath = originalPath.replace('&', '?');
-          }
-          return decodeURIComponent(originalPath);
-        },
+        // No complex rewrite needed, it will just append the path to the target
+        // Example: /api/Universities -> http://tansiqy.runasp.net/api/Universities
       },
     },
   },
