@@ -2,6 +2,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import Loading from "../../Components/Loading/Loading";
+import { Helmet } from "react-helmet-async";
 
 export default function UniversityPage({ type = "university" }) {
   const [loading, setLoading] = useState(true);
@@ -21,7 +22,6 @@ export default function UniversityPage({ type = "university" }) {
       setLoading(true);
       let apiUrl = "";
       
-      // ✅ Updated URLs to work with the new Vite Proxy (/api/...)
       if (isUni) {
         apiUrl = `/api/Universities/${id}`;
       } else if (isCollege) {
@@ -35,8 +35,6 @@ export default function UniversityPage({ type = "university" }) {
       if (isUni) {
         setDetails(data);
       } else {
-        // Find the specific item (college or department) from the returned array
-        // We use 'id' from useParams which represents the current item's ID
         const foundItem = data.find(item => item.id === parseInt(id));
         setDetails(foundItem);
       }
@@ -52,7 +50,6 @@ export default function UniversityPage({ type = "university" }) {
 
   useEffect(() => {
     getDetailsData();
-    // Reset expanded state when moving to a new page
     setExpanded(false);
     
     // Dependencies: trigger when ID or Type changes
@@ -74,6 +71,16 @@ export default function UniversityPage({ type = "university" }) {
   )}`;
 
   return (
+    <>
+
+    {details && (
+      <Helmet>
+        <title>{details.nameAr} | تنسيقي ايجي</title>
+        <meta name="description" content={`تعرف على تنسيق ومصاريف وأقسام ${details.nameAr} ومعلومات القبول الرسمية.`} />
+      </Helmet>
+    )}
+
+
     <div className="w-full min-h-screen bg-[#f7fafd] p-4 md:p-8 " dir="rtl">
       <div className="container mx-auto">
         
@@ -208,5 +215,5 @@ export default function UniversityPage({ type = "university" }) {
         </div>
       </div>
     </div>
-  );
+  </>);
 }

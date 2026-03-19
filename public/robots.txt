@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://tansiky.vercel.app/sitemap.xml
