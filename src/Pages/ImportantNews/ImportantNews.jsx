@@ -74,7 +74,7 @@ export default function ImportantNews() {
             {news.map((item) => (
               <article
                 key={item.id}
-                className="group bg-white rounded-[2rem] border border-gray-100 shadow-sm hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 p-7 flex flex-col justify-between"
+                className="group bg-white rounded-4xl border border-gray-100 shadow-sm hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 p-7 flex flex-col justify-between"
               >
                 <div>
                   <header className="flex items-start justify-between mb-5">
