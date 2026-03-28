@@ -1,14 +1,20 @@
 {
+  "cleanUrls": true,
   "rewrites": [
     {
       "source": "/api/:path*",
       "destination": "https://tansiqy.runasp.net/api/:path*"
     },
     {
-      "handle": "filesystem"
+      "source": "/sitemap.xml",
+      "destination": "/sitemap.xml"
     },
     {
-      "source": "/(.*)",
+      "source": "/robots.txt",
+      "destination": "/robots.txt"
+    },
+    {
+      "source": "/((?!api/|sitemap\\.xml|robots\\.txt).*)",
       "destination": "/index.html"
     }
   ]
