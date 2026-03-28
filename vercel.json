@@ -5,7 +5,10 @@
       "destination": "https://tansiqy.runasp.net/api/:path*"
     },
     {
-      "source": "/((?!api/|.*\\.).*)",
+      "handle": "filesystem"
+    },
+    {
+      "source": "/(.*)",
       "destination": "/index.html"
     }
   ]
