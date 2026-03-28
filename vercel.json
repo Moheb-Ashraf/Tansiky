@@ -1,7 +1,4 @@
 {
-  "version": 2,
-  "cleanUrls": true,
-  "trailingSlash": false,
   "rewrites": [
     {
       "source": "/api/:path*",
@@ -16,7 +13,7 @@
       "destination": "/robots.txt"
     },
     {
-      "source": "/((?!api/|sitemap\\.xml|robots\\.txt).*)",
+      "source": "/(.*)",
       "destination": "/index.html"
     }
   ]
