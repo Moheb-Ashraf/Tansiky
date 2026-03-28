@@ -1,15 +1,25 @@
 {
-  "rewrites": [
+  "version": 2,
+  "routes": [
     {
-      "source": "/api/:path*",
-      "destination": "https://tansiqy.runasp.net/api/:path*"
+      "src": "/api/(.*)",
+      "dest": "https://tansiqy.runasp.net/api/$1"
     },
     {
-      "handle": "filesystem"
+      "src": "/sitemap.xml",
+      "dest": "/sitemap.xml"
     },
     {
-      "source": "/(.*)",
-      "destination": "/index.html"
+      "src": "/robots.txt",
+      "dest": "/robots.txt"
+    },
+    {
+      "src": "/assets/(.*)",
+      "dest": "/assets/$1"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/index.html"
     }
   ]
 }
