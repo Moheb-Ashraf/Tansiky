@@ -1,4 +1,4 @@
-import axios from "axios";
+import api from "../../lib/apiClient";
 import { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import Loading from "../../Components/Loading/Loading";
@@ -22,7 +22,7 @@ export default function SearchResults() {
         setError(null);
 
         // Calling the API directly through the /api proxy
-        const { data } = await axios.get(`/api/Universities/search/name/intelligent`, {
+        const { data } = await api.get(`/api/Universities/search/name/intelligent`, {
           params: {
             searchTerm: query // Axios handles Arabic encoding automatically
           }
@@ -41,7 +41,7 @@ export default function SearchResults() {
               subTitle: item.nameEn,
               typeLabel: isInstitute ? "معهد عالي" : (item.typeAr || "جامعة"),
               targetLink: isInstitute ? `/InstituteDetails/${item.id}` : `/university/${item.id}`,
-              badgeColor: isInstitute ? "bg-amber-100 text-amber-700" : "bg-blue-100 text-blue-700"
+              badgeColor: isInstitute ? "bg-gold-100 text-gold-700" : "bg-brand-100 text-brand-800"
             });
 
             // Add Colleges if they exist in the result item
@@ -53,7 +53,7 @@ export default function SearchResults() {
                   subTitle: college.nameEn,
                   typeLabel: isInstitute ? "شعبة معهد" : "كلية",
                   targetLink: isInstitute ? `/InstituteDetails/${item.id}` : `/college/${item.id}/${college.id}`,
-                  badgeColor: isInstitute ? "bg-orange-100 text-orange-600" : "bg-green-100 text-green-700"
+                  badgeColor: isInstitute ? "bg-gold-100 text-gold-700" : "bg-brand-50 text-brand-700"
                 });
               });
             }
@@ -66,6 +66,7 @@ export default function SearchResults() {
         );
         
         setResults(uniqueResults);
+        
 
       } catch (err) {
         console.error("Search Error:", err);
@@ -79,33 +80,33 @@ export default function SearchResults() {
   }, [query]);
 
   // Handle Loading and Errors
-  if (!query) return <div className="text-center py-20 text-gray-400 font-sans italic">Search for colleges or universities...</div>;
+  if (!query) return <div className="text-center py-20 bg-app-bg min-h-[50vh] theme-subtle">اكتب كلمة البحث في شريط التصفح أعلاه.</div>;
   if (loading) return <Loading />;
   
   if (error) return (
-    <div className="container mx-auto p-20 text-center">
-      <div className="bg-red-50 text-red-600 p-6 rounded-3xl inline-block border border-red-100">
+    <div className="container mx-auto p-20 text-center bg-app-bg min-h-screen">
+      <div className="theme-card p-6 rounded-3xl inline-block border border-maroon-100 text-maroon-600">
         <i className="fa-solid fa-triangle-exclamation text-2xl mb-2"></i>
         <p className="font-bold">{error}</p>
-        <button onClick={() => window.location.reload()} className="mt-4 text-sm underline block mx-auto">Retry again</button>
+        <button type="button" onClick={() => window.location.reload()} className="mt-4 text-sm underline block mx-auto cursor-pointer">إعادة المحاولة</button>
       </div>
     </div>
   );
 
   return (
-    <div className="container mx-auto p-6 min-h-screen" dir="rtl">
+    <div className="container mx-auto p-6 min-h-screen bg-app-bg" dir="rtl">
       {/* Header */}
       <div className="mb-10 text-right">
-        <h2 className="text-3xl font-black text-gray-800">
-          نتائج البحث عن: <span className="text-blue-600 font-sans italic">"{query}"</span>
+        <h2 className="theme-heading text-3xl font-black">
+          نتائج البحث عن: <span className="text-brand-600 font-sans italic">«{query}»</span>
         </h2>
-        <p className="text-gray-500 mt-2 font-medium">Found {results.length} results</p>
+        <p className="theme-subtle mt-2 font-medium">عدد النتائج: {results.length}</p>
       </div>
       
       {/* Results Rendering */}
       {results.length === 0 ? (
-        <div className="bg-white rounded-3xl p-20 text-center shadow-sm border border-dashed border-gray-200">
-          <p className="text-xl text-gray-400">No matching results found.</p>
+        <div className="theme-card rounded-3xl p-20 text-center shadow-sm border border-dashed border-gray-200">
+          <p className="text-xl theme-subtle">لا توجد نتائج مطابقة لبحثك.</p>
         </div>
       ) : (
         <div className="grid gap-4 max-w-4xl mx-auto">
@@ -113,20 +114,20 @@ export default function SearchResults() {
             <Link 
               key={item.id} 
               to={item.targetLink} 
-              className="flex items-center justify-between p-5 bg-white border border-gray-100 rounded-2xl shadow-sm hover:shadow-md hover:border-blue-300 transition-all group"
+              className="theme-card flex items-center justify-between p-5 rounded-2xl shadow-sm hover:shadow-md hover:border-brand-200 transition-all group"
             >
               <div className="flex items-center gap-4">
                 <span className={`px-3 py-1 rounded-lg text-[10px] font-black uppercase tracking-widest ${item.badgeColor}`}>
                   {item.typeLabel}
                 </span>
                 <div className="flex flex-col">
-                  <span className="text-lg font-bold text-gray-700 group-hover:text-blue-600 transition-colors">
+                  <span className="text-lg font-bold theme-heading group-hover:text-brand-600 transition-colors">
                     {item.displayTitle}
                   </span>
-                  {item.subTitle && <span className="text-xs text-gray-400 font-sans mt-0.5 italic">{item.subTitle}</span>}
+                  {item.subTitle && <span className="text-xs theme-subtle font-sans mt-0.5 italic">{item.subTitle}</span>}
                 </div>
               </div>
-              <i className="fa-solid fa-chevron-left text-gray-300 group-hover:text-blue-500 transition-all"></i>
+              <i className="fa-solid fa-chevron-left theme-subtle group-hover:text-brand-500 transition-all"></i>
             </Link>
           ))}
         </div>

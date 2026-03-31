@@ -1,5 +1,5 @@
-import axios from "axios";
-import { useEffect, useState } from "react";
+import api from "../../lib/apiClient";
+import { useCallback, useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import Loading from "../../Components/Loading/Loading";
 import { Helmet } from "react-helmet-async"; 
@@ -12,17 +12,16 @@ export default function Universities() {
   const [loading, setLoading] = useState(true);
   const [typeName, setTypeName] = useState("");
 
-  async function getUniversities() {
+  const getUniversities = useCallback(async () => {
     try {
       setLoading(true);
 
-      const { data } = await axios.get(
+      const { data } = await api.get(
         `/api/Universities/type/${type}`
       );
 
       setUniversities(data);
       
-      // type of university
       if (data.length > 0) {
         setTypeName(data[0].typeAr);
       }
@@ -32,11 +31,11 @@ export default function Universities() {
     } finally {
       setLoading(false);
     }
-  }
+  }, [type]);
 
   useEffect(() => {
     getUniversities();
-  }, [type]);
+  }, [getUniversities]);
 
   if (loading) {
     return <Loading />;
@@ -51,10 +50,10 @@ export default function Universities() {
         <meta name="description" content={`استكشف قائمة جميع ${typeName} في مصر، تعرف على الكليات المتاحة والمحافظات ومصاريف القبول.`} />
       </Helmet>
 
-    <div className="w-full bg-[#f7f9fc] min-h-screen p-6">
+    <div className="w-full bg-app-bg min-h-screen p-6 theme-page-pad">
 
       {/* عنوان الصفحة */}
-      <h1 className="text-2xl font-bold text-start text-gray-800 mb-6">
+      <h1 className="theme-heading text-2xl theme-title-xl font-bold text-start mb-6">
         {typeName}
       </h1>
 
@@ -63,27 +62,27 @@ export default function Universities() {
 
         {universities.map((u) => (
           <Link key={u.id} to={`/university/${u.id}`}>
-            <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-5 hover:shadow-lg transition cursor-pointer">
+            <div className="theme-card theme-elevated rounded-2xl shadow-sm p-5 hover:shadow-lg transition cursor-pointer">
 
               {/* عنوان الجامعة */}
               <div className="flex justify-between items-start">
-                <h2 className="text-lg font-bold text-gray-800 line-clamp-2 ">
+                <h2 className="theme-heading text-lg font-bold line-clamp-2 ">
                   {u.nameAr} / {u.nameEn}
                 </h2>
 
-                <div className="bg-green-100 text-green-600 p-2 rounded-xl">
+                <div className="bg-brand-50 text-brand-600 p-2 rounded-xl">
                   <i className="fa-solid fa-graduation-cap w-6 h-6"></i>
                 </div>
               </div>
 
               {/* المحافظة */}
-              <div className="flex items-center gap-1 text-gray-500 mt-2 text-sm">
+              <div className="flex items-center gap-1 theme-subtle mt-2 text-sm">
                 <i className="fa-solid fa-map w-4 h-4"></i>
                 {u.governorateAr}
               </div>
 
               {/* عدد الكليات */}
-              <p className="text-green-600 font-semibold mt-3 text-sm">
+              <p className="text-brand-600 font-semibold mt-3 text-sm">
                 {u.collegesCount} كلية
               </p>
 

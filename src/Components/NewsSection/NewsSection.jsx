@@ -2,10 +2,10 @@ import { Link } from "react-router-dom";
 
 export function NewsSection() {
   return (
-    <section className="pt-8">
+    <section className="pt-2 md:pt-4">
       <Link
         to="/ImportantNews"
-        className="block bg-linear-to-br container mx-auto from-blue-300 to-blue-600 rounded-2xl shadow-sm hover:shadow-lg transition-all duration-300 p-8 group"
+        className="block bg-linear-to-br container mx-auto from-brand-700 to-brand-900 rounded-2xl shadow-sm ring-1 ring-gold-500/25 hover:shadow-lg hover:ring-gold-400/35 transition-all duration-300 p-8 group"
       >
         <div className="flex items-center justify-between text-2xl">
           <div className="flex items-center gap-4">
@@ -14,7 +14,7 @@ export function NewsSection() {
             </div>
             <div>
               <h2 className="text-white mb-1 text-2xl md:text-xl">أحدث الأخبار</h2>
-              <p className="text-blue-100 text-xl md:text-base">تابع آخر أخبار الجامعات والقبول</p>
+              <p className="text-white/90 text-xl md:text-base">تابع آخر أخبار الجامعات والقبول</p>
             </div>
             
           </div>

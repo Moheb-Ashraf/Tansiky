@@ -1,4 +1,4 @@
-import axios from "axios";
+import api from "../../lib/apiClient";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Loading from "../../Components/Loading/Loading";
@@ -12,7 +12,7 @@ export default function InstitutesList() {
   async function getInstitutes() {
     try {
       setLoading(true);
-      const { data } = await axios.get(`/api/Universities/type/4`);
+      const { data } = await api.get(`/api/Universities/type/4`);
       setInstitutes(data);
     } catch (error) {
       console.error(error);
@@ -35,36 +35,36 @@ export default function InstitutesList() {
         <meta name="keywords" content="معاهد عليا، تنسيق المعاهد، معهد هندسة، معهد حاسبات، تنسيقي ايجي، معاهد معتمدة" />
       </Helmet>
 
-    <div className="w-full bg-[#fffcf5] min-h-screen p-6" dir="rtl">
+    <div className="w-full bg-app-bg min-h-screen p-6" dir="rtl">
       <div className="container mx-auto">
         {/* Page Header */}
-        <div className="mb-10 border-r-8 border-amber-500 pr-4">
-          <h1 className="text-3xl font-black text-gray-800 font-sans">دليل المعاهد العليا</h1>
-          <p className="text-gray-500 font-medium mt-1">استكشف التخصصات المتاحة في المعاهد المعتمدة</p>
+        <div className="mb-10 border-r-8 border-brand-600 pr-4">
+          <h1 className="theme-heading text-3xl font-black font-sans">دليل المعاهد العليا</h1>
+          <p className="theme-subtle font-medium mt-1">استكشف التخصصات المتاحة في المعاهد المعتمدة</p>
         </div>
 
         {/* Institutes Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           {institutes.map((inst) => (
             <Link to={`/InstituteDetails/${inst.id}`} key={inst.id} 
-              className="group bg-white border border-gray-100 rounded-3xl shadow-sm p-6 hover:shadow-xl hover:border-amber-200 transition-all flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+              className="theme-card group rounded-3xl shadow-sm p-6 hover:shadow-xl hover:border-brand-200 transition-all flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
               <div className="flex gap-4 items-center">
-                <div className="w-16 h-16 bg-amber-50 text-amber-600 rounded-2xl flex items-center justify-center text-3xl group-hover:bg-amber-500 group-hover:text-white transition-colors">
+                <div className="w-16 h-16 bg-brand-50 text-brand-600 rounded-2xl flex items-center justify-center text-3xl group-hover:bg-brand-600 group-hover:text-white transition-colors">
                   <i className="fa-solid fa-school"></i>
                 </div>
                 <div>
-                  <h3 className="text-xl font-bold text-gray-800 group-hover:text-amber-600 transition-colors">
+                  <h3 className="theme-heading text-xl font-bold group-hover:text-brand-600 transition-colors">
                     {inst.nameAr}
                   </h3>
-                  <div className="flex gap-4 mt-2 text-sm text-gray-400">
+                  <div className="flex gap-4 mt-2 text-sm theme-subtle">
                     <span className="flex items-center gap-1"><i className="fa-solid fa-location-dot"></i> {inst.governorateAr}</span>
                   </div>
                 </div>
               </div>
 
-              <div className="bg-amber-50 px-4 py-2 rounded-2xl text-center min-w-[100px]">
-                <p className="text-[10px] text-amber-600 font-bold uppercase">التنسيق</p>
-                <p className="text-2xl font-black text-amber-600 font-sans">{inst.lastYearCoordination ? `${inst.lastYearCoordination}%` : '---'}</p>
+              <div className="bg-brand-50 px-4 py-2 rounded-2xl text-center min-w-[100px]">
+                <p className="text-[10px] text-brand-700 font-bold uppercase">التنسيق</p>
+                <p className="text-2xl font-black text-brand-700 font-sans">{inst.lastYearCoordination ? `${inst.lastYearCoordination}%` : '---'}</p>
               </div>
             </Link>
           ))}
