@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <!-- الصفحة الرئيسية -->
+  <url>
+    <loc>https://tansiqyegy.vercel.app/</loc>
+    <priority>1.0</priority>
+  </url>
+  
+  <!-- الأخبار الهامة -->
+  <url>
+    <loc>https://tansiqyegy.vercel.app/ImportantNews</loc>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- أنواع الجامعات -->
+  <url>
+    <loc>https://tansiqyegy.vercel.app/TypeOfUniversities</loc>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- المعاهد -->
+  <url>
+    <loc>https://tansiqyegy.vercel.app/Institutes</loc>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- البحث المتقدم -->
+  <url>
+    <loc>https://tansiqyegy.vercel.app/advanced-search</loc>
+    <priority>0.7</priority>
+  </url>
+</urlset>
