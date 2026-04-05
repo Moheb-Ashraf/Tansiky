@@ -63,19 +63,24 @@ export default function AdvancedSearch() {
         params: cleanFilters
       });
 
-      
-      if (data && Array.isArray(data)) {
-        setResults(data);
-        
-      } else {
-        setResults([]); 
-        console.warn("Expected an array but got:", data);
+      let finalData = [];
+      if (Array.isArray(data)) {
+        finalData = data;
+      } else if (data && typeof data === 'object') {
+        const arrayKey = Object.keys(data).find(key => Array.isArray(data[key]));
+        finalData = arrayKey ? data[arrayKey] : [];
+      }
+
+      setResults(finalData);
+
+      if (finalData.length === 0) {
+        Swal.fire("تنبيه", "لم نجد نتائج تطابق هذه المعايير", "info");
       }
 
     } catch (error) {
         console.error("Search Error:", error);
         setResults([]);
-        Swal.fire("تنبيه", "لم نجد نتائج تطابق هذه المعايير أو حدث خطأ في الشبكة", "info");
+        Swal.fire("تنبيه", "حدث خطأ أثناء تحميل البيانات، يرجى المحاولة لاحقاً", "error");
     } finally {
       setLoading(false);
     }
@@ -163,15 +168,22 @@ export default function AdvancedSearch() {
 
           {loading ? <Loading /> : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-20">
-              {Array.isArray(results) && results.length > 0 ? (
+              {results.length > 0 ? (
                 results.map((uni) => (
-                  <Link key={uni.id} to={uni.type === 4 ? `/InstituteDetails/${uni.id}` : `/university/${uni.id}`} className="theme-card theme-elevated rounded-[2.5rem] p-8 shadow-sm hover:shadow-2xl transition-all group">
+                  <Link key={uni.id} 
+                  to={uni.type === 4 
+                        ? `/InstituteDetails/${uni.id}` 
+                        : uni.universityId 
+                          ? `/college/${uni.universityId}/${uni.id}` 
+                          : `/university/${uni.id}`} 
+                  
+                  className="theme-card theme-elevated rounded-[2.5rem] p-8 shadow-sm hover:shadow-2xl transition-all group">
                     <div className="flex justify-between items-start mb-6">
                       <div className="bg-brand-50 text-brand-600 w-14 h-14 rounded-2xl flex items-center justify-center text-3xl group-hover:bg-brand-600 group-hover:text-white transition-all shadow-sm">
                         <i className={`fa-solid ${uni.type === 4 ? 'fa-school' : 'fa-graduation-cap'}`}></i>
                       </div>
                       <span className={`text-[10px] font-black uppercase tracking-widest px-3 py-1 rounded-full ${uni.type === 4 ? 'bg-gold-100 text-gold-700' : 'bg-brand-100 text-brand-700'}`}>
-                         {universityTypes.find(t => t.id === uni.type)?.name || "جامعة"}
+                         {uni.university?.typeAr || universityTypes.find(t => t.id === uni.university?.type)?.name || "كلية"}
                       </span>
                     </div>
                     
@@ -181,11 +193,15 @@ export default function AdvancedSearch() {
                     <div className="flex justify-between items-center pt-6 border-t border-(--theme-border)">
                       <div className="flex flex-col">
                           <span className="text-[10px] theme-subtle font-bold uppercase">المصاريف</span>
-                          <span className="text-brand-700 font-black text-lg font-sans">{uni.fees?.toLocaleString() || '---'} ج.م</span>
+                          <span className="text-brand-700 font-black text-lg font-sans">
+                            {(uni.fees || uni.feesCategoryA)?.toLocaleString() || '---'} ج.م
+                          </span>
                       </div>
                       <div className="flex flex-col text-left">
                           <span className="text-[10px] theme-subtle font-bold uppercase">التنسيق</span>
-                          <span className="text-brand-600 font-black text-lg font-sans">{uni.lastYearCoordination || uni.minimumPercentage || '---'}%</span>
+                          <span className="text-brand-600 font-black text-lg font-sans">
+                            {uni.lastYearCoordination || uni.minimumPercentage || '---'}%
+                          </span>
                       </div>
                     </div>
                   </Link>

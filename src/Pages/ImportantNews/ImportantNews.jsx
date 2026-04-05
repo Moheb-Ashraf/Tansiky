@@ -82,7 +82,7 @@ export default function ImportantNews() {
                       <span className="inline-flex items-center justify-center w-12 h-12 rounded-2xl bg-brand-50 text-brand-600 group-hover:bg-brand-600 group-hover:text-white transition-colors duration-300 shadow-sm">
                         <i className="fa-solid fa-newspaper text-xl"></i>
                       </span>
-                      <span className="px-3 py-1 rounded-lg bg-[var(--theme-muted)] theme-subtle text-[10px] font-black uppercase tracking-widest">
+                      <span className="px-3 py-1 rounded-lg bg-(--theme-muted) theme-subtle text-[10px] font-black uppercase tracking-widest">
                         أخبار حصرية
                       </span>
                     </div>
@@ -102,7 +102,7 @@ export default function ImportantNews() {
                   </div>
                 </div>
 
-                <footer className="mt-8 pt-5 border-t border-[var(--theme-border)] flex items-center justify-between">
+                <footer className="mt-8 pt-5 border-t border-(--theme-border) flex items-center justify-between">
                   <Link
                     to={`/ImportantNews/PageNews/${item.id}`}
                     className="text-brand-600 font-bold hover:gap-3 transition-all inline-flex items-center gap-2 group-hover:text-brand-800"

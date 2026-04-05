@@ -27,36 +27,26 @@ export default function SearchResults() {
             searchTerm: query // Axios handles Arabic encoding automatically
           }
         });
+        
 
         const finalResults = [];
 
-        if (data && Array.isArray(data)) {
-          data.forEach(item => {
+        // Check if data contains colleges array based on API response structure
+        if (data && Array.isArray(data.colleges)) {
+          data.colleges.forEach(item => {
             const isInstitute = item.type === 4;
+            const uniName = item.university?.nameAr || "";
+            const uniId = item.universityId || item.university?.id;
 
-            // Add the University or Institute entry
+            // Add the College or Institute entry
             finalResults.push({
-              id: `uni-${item.id}`,
-              displayTitle: item.nameAr,
+              id: `coll-${item.id}`,
+              displayTitle: uniName ? `${item.nameAr} - ${uniName}` : item.nameAr,
               subTitle: item.nameEn,
-              typeLabel: isInstitute ? "معهد عالي" : (item.typeAr || "جامعة"),
-              targetLink: isInstitute ? `/InstituteDetails/${item.id}` : `/university/${item.id}`,
-              badgeColor: isInstitute ? "bg-gold-100 text-gold-700" : "bg-brand-100 text-brand-800"
+              typeLabel: isInstitute ? "شعبة معهد" : "كلية",
+              targetLink: isInstitute ? `/InstituteDetails/${uniId}` : `/college/${uniId}/${item.id}`,
+              badgeColor: isInstitute ? "bg-gold-100 text-gold-700" : "bg-brand-50 text-brand-700"
             });
-
-            // Add Colleges if they exist in the result item
-            if (item.colleges && item.colleges.length > 0) {
-              item.colleges.forEach(college => {
-                finalResults.push({
-                  id: `coll-${college.id}`,
-                  displayTitle: `${college.nameAr} - ${item.nameAr}`,
-                  subTitle: college.nameEn,
-                  typeLabel: isInstitute ? "شعبة معهد" : "كلية",
-                  targetLink: isInstitute ? `/InstituteDetails/${item.id}` : `/college/${item.id}/${college.id}`,
-                  badgeColor: isInstitute ? "bg-gold-100 text-gold-700" : "bg-brand-50 text-brand-700"
-                });
-              });
-            }
           });
         }
 

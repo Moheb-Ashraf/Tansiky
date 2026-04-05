@@ -27,7 +27,7 @@ function Cards_home({ title, link, color, icon, count, animationDelay = 0 }) {
                 )}
 
                 {/* decorative element */}
-                <div className="w-8 h-1 bg-[var(--theme-muted)] rounded-full mt-3 group-hover:w-16 group-hover:bg-brand-500 transition-all duration-500"></div>
+                <div className="w-8 h-1 bg-(--theme-muted) rounded-full mt-3 group-hover:w-16 group-hover:bg-brand-500 transition-all duration-500"></div>
             </div>
         </Link>
     );
