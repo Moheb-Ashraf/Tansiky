@@ -62,10 +62,9 @@ export default function InstitutesList() {
                 </div>
               </div>
 
-              <div className="bg-brand-50 px-4 py-2 rounded-2xl text-center min-w-[100px]">
-                <p className="text-[10px] text-brand-700 font-bold uppercase">التنسيق</p>
-                <p className="text-2xl font-black text-brand-700 font-sans">{inst.lastYearCoordination ? `${inst.lastYearCoordination}%` : '---'}</p>
-              </div>
+              <div className="w-8 h-16 bg-brand-50 text-brand-600 rounded-2xl flex items-center justify-center text-2xl group-hover:bg-brand-600 group-hover:text-white transition-colors">
+                  <i className="fa-solid fa-arrow-left"></i>
+                </div>
             </Link>
           ))}
         </div>

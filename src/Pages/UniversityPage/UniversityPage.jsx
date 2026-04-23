@@ -160,22 +160,36 @@ export default function UniversityPage({ type = "university" }) {
           {/* Left Column: Side Info */}
           <div className="space-y-6">
             
-            {/* Costs & Admission */}
-            <div className="theme-card rounded-2xl shadow p-6">
-              <div className="mb-6">
-                <h3 className="theme-subtle text-sm mb-1">المصاريف السنوية</h3>
-                <p className="text-2xl font-black text-brand-700">
-                  {details.fees ? `${details.fees.toLocaleString()} ج.م` : "غير محدد"}
-                </p>
+           {/* Costs & Admission */}
+            {!isUni && (
+              <div className="theme-card rounded-2xl shadow p-6">
+
+                {/* Costs */}
+                <div className="mb-6">
+                  <h3 className="theme-subtle text-sm mb-1">المصاريف السنوية</h3>
+                  <p className="text-2xl font-black text-brand-700">
+                    {details?.fees
+                      ? `${Number(details.fees).toLocaleString()} ج.م`
+                      : "غير محدد"}
+                  </p>
+                </div>
+
+                {/* Coordination / Admission */}
+                <div className="pt-4 border-t border-(--theme-border)">
+                  <h3 className="theme-subtle text-sm mb-1">التنسيق / القبول</h3>
+
+                  <p className="text-lg font-bold theme-heading">
+                    {(() => {
+                      const value =
+                        details?.lastYearCoordination ?? details?.minimumPercentage;
+
+                      return value ? `${value} %` : "غير محدد";
+                    })()}
+                  </p>
+                </div>
+
               </div>
-              <div className="pt-4 border-t border-(--theme-border)">
-                <h3 className="theme-subtle text-sm mb-1">التنسيق / القبول</h3>
-                <p className="text-lg font-bold theme-heading">
-                  {isUni ? "يختلف حسب الكلية" : (details.lastYearCoordination || details.minimumPercentage || "غير محدد")}
-                   %
-                </p>
-              </div>
-            </div>
+            )}
 
             {/* Location & Contact */}
             <div className="theme-card rounded-2xl shadow p-6">
