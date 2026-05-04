@@ -39,7 +39,7 @@ function Footer() {
             <div className="flex flex-col items-center md:items-end gap-2 text-sm text-gray-500">
               <span className="flex items-center gap-2">
                 <i className="fa-solid fa-phone text-brand-600"></i>
-                01*********
+                01006448913
               </span>
               <span className="flex items-center gap-2">
                 <i className="fa-solid fa-envelope text-brand-600"></i>
@@ -52,15 +52,13 @@ function Footer() {
               <Link to="https://www.facebook.com/share/18Ws3Z4aVQ/" target="_blank">
                 <i className="fa-brands fa-facebook cursor-pointer hover:scale-110 hover:text-gold-600 transition-all duration-200" aria-hidden />
               </Link>
-              <Link to="#">
+              <Link to="https://www.instagram.com/tansiqyegy?igsh=MWZyZHprOTc3cHZpcw==" target="_blank">
                 <i className="fa-brands fa-instagram cursor-pointer hover:scale-110 hover:text-gold-600 transition-all duration-200" aria-hidden />
               </Link>
-              <Link to="#">
+              <Link to="https://wa.me/01006448913" target="_blank">
                 <i className="fa-brands fa-whatsapp cursor-pointer hover:scale-110 hover:text-gold-600 transition-all duration-200" aria-hidden />
               </Link>
-              <Link to="#">
-                <i className="fa-brands fa-x-twitter cursor-pointer hover:scale-110 hover:text-gold-600 transition-all duration-200" aria-hidden />
-              </Link>
+              
             </div>
           </div>
 

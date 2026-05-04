@@ -27,7 +27,9 @@ function Home() {
       .then((data) => {
         const mapped = data.map((item, index) => ({
           name: item.typeNameAr,
-          count: `${item.totalUniversities} مؤسسة`,
+          count: item.typeNameAr.includes("معاهد")
+                ? `${item.totalUniversities} معهد`
+                : `${item.totalUniversities} جامعة`,
           type: index + 1,
           color: TYPE_COLORS[index] ?? "bg-brand-600",
         }));

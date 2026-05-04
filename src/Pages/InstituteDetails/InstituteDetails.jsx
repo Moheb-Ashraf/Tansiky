@@ -176,9 +176,10 @@ export default function InstituteDetails() {
                 <h3 className="text-xl font-bold mb-2 flex items-center gap-2 text-brand-600">
                   <i className="fa-solid fa-globe text-brand-400"></i> الموقع الإلكتروني
                 </h3>
-                <p className="text-slate-800 text-sm mb-6 font-sans italic">{details.officialWebsite || "غير متوفر"}</p>
               </div>
-              <a href={details.officialWebsite ? (details.officialWebsite.startsWith('http') ? details.officialWebsite : `https://${details.officialWebsite}`) : "#"} 
+              <a href={details.officialWebsite 
+              ? (details.officialWebsite.startsWith('http') 
+              ? details.officialWebsite : `https://${details.officialWebsite}`) : "#"} 
                  target="_blank" rel="noreferrer" 
                  className="block text-center bg-white text-brand-600 py-4 rounded-2xl font-bold hover:bg-brand-600 hover:text-white transition-all z-10">
                  زيارة الموقع الرسمي
