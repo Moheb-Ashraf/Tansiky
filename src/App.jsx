@@ -14,7 +14,7 @@ import TypeOfUniversities from "./Pages/TypeOfUniversities/TypeOfUniversities";
 import Universities from "./Pages/Universities/Universities";
 import UniversityPage from "./Pages/UniversityPage/UniversityPage";
 import ScrollToTop from "./Components/ScrollToTop/ScrollToTop.jsx";
-import ChatWidget from "./Components/ChatWidget/ChatWidget";
+import ChatWidget from "./Components/Chatwidget/Chatwidget";
 
 
 function App() {
