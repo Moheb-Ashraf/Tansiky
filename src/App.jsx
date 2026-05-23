@@ -14,6 +14,7 @@ import TypeOfUniversities from "./Pages/TypeOfUniversities/TypeOfUniversities";
 import Universities from "./Pages/Universities/Universities";
 import UniversityPage from "./Pages/UniversityPage/UniversityPage";
 import ScrollToTop from "./Components/ScrollToTop/ScrollToTop.jsx";
+import ChatWidget from "./Components/ChatWidget/ChatWidget";
 
 
 function App() {
@@ -52,6 +53,7 @@ function App() {
         </Routes>
       </main>
       <Footer />
+      <ChatWidget />
     </Router>
   );
 }
