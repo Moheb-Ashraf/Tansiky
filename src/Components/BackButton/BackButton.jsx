@@ -15,7 +15,7 @@ export default function BackButton() {
   if (isHome) return null;
 
   return (
-    <div className="container mx-auto px-4 pt-5" dir="rtl">
+    <div className="container mx-auto px-4 pt-5 pb-5" dir="rtl">
       <button
         type="button"
         onClick={handleBack}

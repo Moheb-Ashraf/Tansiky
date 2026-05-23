@@ -167,9 +167,9 @@ export default function UniversityPage({ type = "university" }) {
                         >
                           <div>
                             <p className="font-bold">{dept.nameAr}</p>
-                            <p className="text-xs text-brand-600 mt-1">
+                            {/* <p className="text-xs text-brand-600 mt-1">
                               {dept.studyTypeAr}
-                            </p>
+                            </p> */}
                           </div>
                           <i className="fa-solid fa-circle-check text-brand-600"></i>
                         </div>

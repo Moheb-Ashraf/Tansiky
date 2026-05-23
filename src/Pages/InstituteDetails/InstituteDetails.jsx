@@ -86,7 +86,7 @@ export default function InstituteDetails() {
         </div>
       </div>
 
-      <div className="container mx-auto max-w-5xl px-4 -mt-12">
+      <div className="container mx-auto max-w-5xl px-4 -mt-12 pt-20">
         
         {/* Specializations Grid */}
         <div className="mb-10">
