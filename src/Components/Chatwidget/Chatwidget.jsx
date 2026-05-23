@@ -2,7 +2,36 @@ import { useState, useRef, useEffect, useCallback } from "react";
 
 const API_URL = "https://keufwvyslwdptjxspupy.supabase.co/functions/v1/chat";
 const API_KEY =
+  import.meta.env.VITE_SUPABASE_ANON_KEY ||
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtldWZ3dnlzbHdkcHRqeHNwdXB5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjUwNTYyNDYsImV4cCI6MjA4MDYzMjI0Nn0.8EfLc2zORekbucHYurumc4P6BROkjLmY4_IgZeZAGiE";
+
+const WELCOME_MESSAGE = {
+  role: "assistant",
+  content:
+    "أهلاً بك في بحر 🌊\nأنا مساعدك الذكي للتنسيق والقبول.\nاسألني عن أي جامعة أو كلية!",
+  local: true,
+};
+
+/** رسائل تُعرض في الواجهة فقط — لا تُرسل للـ API */
+function messagesForApi(messages) {
+  return messages
+    .filter((m) => !m.local && String(m.content || "").trim())
+    .map(({ role, content }) => ({ role, content }));
+}
+
+function extractSseToken(raw) {
+  if (!raw || raw === "[DONE]") return { done: raw === "[DONE]", token: "" };
+  try {
+    const json = JSON.parse(raw);
+    const token = json?.choices?.[0]?.delta?.content;
+    if (token) return { done: false, token };
+    const err = json?.error?.message || json?.error;
+    if (typeof err === "string") return { done: false, token: "", error: err };
+  } catch {
+    /* سطر JSON غير مكتمل — يُعاد لاحقاً عبر الـ buffer */
+  }
+  return { done: false, token: "" };
+}
 
 // ── Quick option steps shown once at the start ──────────────────────────────
 // Step 0: what kind of help?  Step 1: what university type?
@@ -40,12 +69,7 @@ const TOOLTIP_MESSAGES = [
 
 export default function ChatWidget() {
   const [open, setOpen] = useState(false);
-  const [messages, setMessages] = useState([
-    {
-      role: "assistant",
-      content: "أهلاً بك في بحر 🌊\nأنا مساعدك الذكي للتنسيق والقبول.\nاسألني عن أي جامعة أو كلية!",
-    },
-  ]);
+  const [messages, setMessages] = useState([WELCOME_MESSAGE]);
   const [input, setInput] = useState("");
   const [streaming, setStreaming] = useState(false);
 
@@ -148,27 +172,50 @@ export default function ChatWidget() {
   // ── Handle quick option selection ───────────────────────────────────────────
   const handleQuickOption = (message) => {
     if (message === "__ASK_CUSTOM__") {
-      // User wants to type themselves — skip remaining steps
       setQuickStep(-1);
       setTimeout(() => inputRef.current?.focus(), 100);
       return;
     }
 
-    // If on step 0, move to step 1 after sending
-    const nextStep = quickStep < QUICK_STEPS.length - 1 ? quickStep + 1 : -1;
-
-    // Add user message and send it
     const userMsg = { role: "user", content: message };
     const updatedMessages = [...messages, userMsg];
     setMessages(updatedMessages);
-    setQuickStep(nextStep);
+
+    const isLastQuickStep = quickStep >= QUICK_STEPS.length - 1;
+    if (!isLastQuickStep) {
+      setQuickStep(quickStep + 1);
+      return;
+    }
+
+    setQuickStep(-1);
     sendToAPI(updatedMessages);
   };
 
+  const setLastAssistantContent = useCallback((content) => {
+    setMessages((prev) => [...prev.slice(0, -1), { role: "assistant", content }]);
+  }, []);
+
+  const appendAssistantToken = useCallback((token) => {
+    setMessages((prev) => {
+      const updated = [...prev];
+      const last = updated[updated.length - 1];
+      updated[updated.length - 1] = {
+        role: "assistant",
+        content: (last?.content || "") + token,
+      };
+      return updated;
+    });
+  }, []);
+
   // ── Core API call (shared by quick options + manual input) ──────────────────
   const sendToAPI = async (updatedMessages) => {
+    const apiMessages = messagesForApi(updatedMessages);
+    if (apiMessages.length === 0) return;
+
     setStreaming(true);
     setMessages((prev) => [...prev, { role: "assistant", content: "" }]);
+
+    let gotContent = false;
 
     try {
       const controller = new AbortController();
@@ -177,48 +224,93 @@ export default function ChatWidget() {
       const response = await fetch(API_URL, {
         method: "POST",
         headers: { "Content-Type": "application/json", Authorization: `Bearer ${API_KEY}` },
-        body: JSON.stringify({
-          messages: updatedMessages.map(({ role, content }) => ({ role, content })),
-        }),
+        body: JSON.stringify({ messages: apiMessages }),
         signal: controller.signal,
       });
 
       if (response.status === 429) {
-        setMessages((prev) => [...prev.slice(0, -1), { role: "assistant", content: "⚠️ كثير من الطلبات، انتظر قليلاً وحاول مرة أخرى." }]);
+        setLastAssistantContent("⚠️ كثير من الطلبات، انتظر قليلاً وحاول مرة أخرى.");
         return;
       }
       if (response.status === 402) {
-        setMessages((prev) => [...prev.slice(0, -1), { role: "assistant", content: "⚠️ الخدمة غير متاحة حالياً." }]);
+        setLastAssistantContent("⚠️ الخدمة غير متاحة حالياً (انتهى رصيد الاستخدام).");
+        return;
+      }
+
+      if (!response.ok) {
+        let detail = `خطأ من الخادم (${response.status})`;
+        try {
+          const errJson = await response.json();
+          detail = errJson.error || errJson.message || detail;
+        } catch {
+          try {
+            const errText = await response.text();
+            if (errText) detail = errText.slice(0, 200);
+          } catch { /* ignore */ }
+        }
+        setLastAssistantContent(`⚠️ ${detail}`);
+        return;
+      }
+
+      if (!response.body) {
+        setLastAssistantContent("⚠️ لم يصل رد من الخادم. تحقق من الاتصال وحاول مرة أخرى.");
         return;
       }
 
       const reader = response.body.getReader();
       const decoder = new TextDecoder();
-      while (true) {
+      let sseBuffer = "";
+      let streamDone = false;
+
+      const consumeSseLines = (lines) => {
+        for (const line of lines) {
+          const trimmed = line.trim();
+          if (!trimmed.startsWith("data:")) continue;
+
+          const raw = trimmed.slice(5).trim();
+          const { done, token, error } = extractSseToken(raw);
+          if (done) {
+            streamDone = true;
+            return;
+          }
+          if (error) {
+            setLastAssistantContent(`⚠️ ${error}`);
+            streamDone = true;
+            return;
+          }
+          if (token) {
+            gotContent = true;
+            appendAssistantToken(token);
+          }
+        }
+      };
+
+      const feedSseChunk = (chunkText) => {
+        sseBuffer += chunkText;
+        const lines = sseBuffer.split("\n");
+        sseBuffer = lines.pop() ?? "";
+        consumeSseLines(lines);
+      };
+
+      while (!streamDone) {
         const { done, value } = await reader.read();
         if (done) break;
-        const lines = decoder.decode(value).split("\n").filter((l) => l.startsWith("data:"));
-        for (const line of lines) {
-          const raw = line.replace(/^data:\s*/, "").trim();
-          if (raw === "[DONE]") break;
-          try {
-            const token = JSON.parse(raw)?.choices?.[0]?.delta?.content || "";
-            if (token) {
-              setMessages((prev) => {
-                const updated = [...prev];
-                updated[updated.length - 1] = {
-                  role: "assistant",
-                  content: updated[updated.length - 1].content + token,
-                };
-                return updated;
-              });
-            }
-          } catch { /* ignore malformed SSE lines */ }
-        }
+        feedSseChunk(decoder.decode(value, { stream: true }));
+      }
+
+      feedSseChunk(decoder.decode());
+      if (sseBuffer.trim()) consumeSseLines([sseBuffer]);
+
+      if (!gotContent) {
+        setLastAssistantContent(
+          "⚠️ لم يصل نص للرد. قد يكون السيرفر مشغولاً أو تم تجاوز الحد — انتظر دقيقة وحاول مرة أخرى."
+        );
       }
     } catch (err) {
       if (err.name !== "AbortError") {
-        setMessages((prev) => [...prev.slice(0, -1), { role: "assistant", content: "⚠️ حدث خطأ، يرجى المحاولة مرة أخرى." }]);
+        setLastAssistantContent("⚠️ حدث خطأ في الاتصال، يرجى المحاولة مرة أخرى.");
+      } else {
+        setMessages((prev) => prev.slice(0, -1));
       }
     } finally {
       setStreaming(false);
@@ -244,7 +336,7 @@ export default function ChatWidget() {
   // ── Clear / reset ────────────────────────────────────────────────────────────
   const clearChat = () => {
     abortRef.current?.abort();
-    setMessages([{ role: "assistant", content: "أهلاً بك في بحر 🌊\nأنا مساعدك الذكي للتنسيق والقبول.\nاسألني عن أي جامعة أو كلية!" }]);
+    setMessages([WELCOME_MESSAGE]);
     setStreaming(false);
     setQuickStep(0); // Reset quick options on new chat
   };
