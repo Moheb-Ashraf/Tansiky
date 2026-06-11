@@ -43,7 +43,7 @@ function Footer() {
               </span>
               <span className="flex items-center gap-2">
                 <i className="fa-solid fa-envelope text-brand-600"></i>
-                ******@gmail.com
+                tansiqyegy@gmail.com
               </span>
             </div>
 
