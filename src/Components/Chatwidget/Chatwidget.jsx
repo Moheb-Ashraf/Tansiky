@@ -33,6 +33,12 @@ function extractSseToken(raw) {
   return { done: false, token: "" };
 }
 
+function getClientPoint(e) {
+  const t = e.touches?.[0] ?? e.changedTouches?.[0];
+  if (t) return { x: t.clientX, y: t.clientY };
+  return { x: e.clientX, y: e.clientY };
+}
+
 // ── Quick option steps shown once at the start ──────────────────────────────
 // Step 0: what kind of help?  Step 1: what university type?
 const QUICK_STEPS = [
@@ -120,53 +126,83 @@ export default function ChatWidget() {
     return () => clearInterval(cycle);
   }, [open]);
 
-  // ── FAB drag ────────────────────────────────────────────────────────────────
-  const onFabMouseDown = useCallback((e) => {
+  // ── FAB drag (mouse + touch) ────────────────────────────────────────────────
+  const startFabDrag = useCallback((e) => {
     fabDragMoved.current = false;
     setFabDragging(true);
     const rect = fabRef.current.getBoundingClientRect();
-    fabDragOffset.current = { x: e.clientX - rect.left, y: e.clientY - rect.top };
-    e.preventDefault();
+    const { x, y } = getClientPoint(e);
+    fabDragOffset.current = { x: x - rect.left, y: y - rect.top };
+    if (e.type === "mousedown") e.preventDefault();
   }, []);
 
   useEffect(() => {
+    if (!fabDragging) return;
+
     const onMove = (e) => {
-      if (!fabDragging) return;
       fabDragMoved.current = true;
-      const x = e.clientX - fabDragOffset.current.x;
-      const y = e.clientY - fabDragOffset.current.y;
+      if (e.cancelable) e.preventDefault();
+      const { x, y } = getClientPoint(e);
       const maxX = window.innerWidth - (fabRef.current?.offsetWidth || 62);
       const maxY = window.innerHeight - (fabRef.current?.offsetHeight || 100);
-      setFabPosition({ x: Math.max(0, Math.min(x, maxX)), y: Math.max(0, Math.min(y, maxY)) });
+      setFabPosition({
+        x: Math.max(0, Math.min(x - fabDragOffset.current.x, maxX)),
+        y: Math.max(0, Math.min(y - fabDragOffset.current.y, maxY)),
+      });
     };
     const onUp = () => setFabDragging(false);
+
     window.addEventListener("mousemove", onMove);
     window.addEventListener("mouseup", onUp);
-    return () => { window.removeEventListener("mousemove", onMove); window.removeEventListener("mouseup", onUp); };
+    window.addEventListener("touchmove", onMove, { passive: false });
+    window.addEventListener("touchend", onUp);
+    window.addEventListener("touchcancel", onUp);
+    return () => {
+      window.removeEventListener("mousemove", onMove);
+      window.removeEventListener("mouseup", onUp);
+      window.removeEventListener("touchmove", onMove);
+      window.removeEventListener("touchend", onUp);
+      window.removeEventListener("touchcancel", onUp);
+    };
   }, [fabDragging]);
 
-  // ── Chat window drag ────────────────────────────────────────────────────────
-  const onWindowMouseDown = useCallback((e) => {
+  // ── Chat window drag (mouse + touch) — header only to preserve message scroll ─
+  const startWindowDrag = useCallback((e) => {
     if (e.target.closest("button, input, textarea")) return;
     setDragging(true);
     const rect = widgetRef.current.getBoundingClientRect();
-    dragOffset.current = { x: e.clientX - rect.left, y: e.clientY - rect.top };
-    e.preventDefault();
+    const { x, y } = getClientPoint(e);
+    dragOffset.current = { x: x - rect.left, y: y - rect.top };
+    if (e.type === "mousedown") e.preventDefault();
   }, []);
 
   useEffect(() => {
+    if (!dragging) return;
+
     const onMove = (e) => {
-      if (!dragging) return;
-      const x = e.clientX - dragOffset.current.x;
-      const y = e.clientY - dragOffset.current.y;
+      if (e.cancelable) e.preventDefault();
+      const { x, y } = getClientPoint(e);
       const maxX = window.innerWidth - (widgetRef.current?.offsetWidth || 370);
       const maxY = window.innerHeight - (widgetRef.current?.offsetHeight || 530);
-      setPosition({ x: Math.max(0, Math.min(x, maxX)), y: Math.max(0, Math.min(y, maxY)) });
+      setPosition({
+        x: Math.max(0, Math.min(x - dragOffset.current.x, maxX)),
+        y: Math.max(0, Math.min(y - dragOffset.current.y, maxY)),
+      });
     };
     const onUp = () => setDragging(false);
+
     window.addEventListener("mousemove", onMove);
     window.addEventListener("mouseup", onUp);
-    return () => { window.removeEventListener("mousemove", onMove); window.removeEventListener("mouseup", onUp); };
+    window.addEventListener("touchmove", onMove, { passive: false });
+    window.addEventListener("touchend", onUp);
+    window.addEventListener("touchcancel", onUp);
+    return () => {
+      window.removeEventListener("mousemove", onMove);
+      window.removeEventListener("mouseup", onUp);
+      window.removeEventListener("touchmove", onMove);
+      window.removeEventListener("touchend", onUp);
+      window.removeEventListener("touchcancel", onUp);
+    };
   }, [dragging]);
 
   // ── Handle quick option selection ───────────────────────────────────────────
@@ -365,6 +401,7 @@ export default function ChatWidget() {
           position: fixed; z-index: 9999;
           display: flex; flex-direction: column; align-items: center; gap: 8px;
           cursor: grab; user-select: none;
+          touch-action: none;
         }
         .bahr-fab-wrapper.bahr-fab-dragging { cursor: grabbing; }
 
@@ -448,6 +485,7 @@ export default function ChatWidget() {
           background: linear-gradient(135deg, #1a384f 0%, #26547d 55%, #3a7aad 100%);
           padding: 13px 15px; display: flex; align-items: center; justify-content: space-between;
           cursor: grab; user-select: none; flex-shrink: 0; position: relative; overflow: hidden;
+          touch-action: none;
         }
         .bahr-header::before {
           content: ''; position: absolute; inset: 0;
@@ -632,7 +670,8 @@ export default function ChatWidget() {
             ref={fabRef}
             className={`bahr-fab-wrapper${fabDragging ? " bahr-fab-dragging" : ""}`}
             style={fabStyle}
-            onMouseDown={onFabMouseDown}
+            onMouseDown={startFabDrag}
+            onTouchStart={startFabDrag}
           >
             <div className={`bahr-tooltip ${tooltipVisible ? "visible" : "invisible"}`}>
               {TOOLTIP_MESSAGES[tooltipIndex]}
@@ -668,10 +707,13 @@ export default function ChatWidget() {
             ref={widgetRef}
             className={`bahr-window${dragging ? " bahr-dragging" : ""}`}
             style={windowStyle}
-            onMouseDown={onWindowMouseDown}
           >
             {/* Header */}
-            <div className="bahr-header">
+            <div
+              className="bahr-header"
+              onMouseDown={startWindowDrag}
+              onTouchStart={startWindowDrag}
+            >
               <div className="bahr-header-info">
                 <div className="bahr-avatar">
                   <svg width="22" height="22" viewBox="0 0 32 32" fill="none">

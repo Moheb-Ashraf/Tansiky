@@ -15,6 +15,9 @@ import Universities from "./Pages/Universities/Universities";
 import UniversityPage from "./Pages/UniversityPage/UniversityPage";
 import ScrollToTop from "./Components/ScrollToTop/ScrollToTop.jsx";
 import ChatWidget from "./Components/Chatwidget/Chatwidget";
+import AboutUs from "./Pages/AboutUs/AboutUs";
+import ContactUs from "./Pages/ContactUs/ContactUs";
+import PrivacyPolicy from "./Pages/PrivacyPolicy/PrivacyPolicy";
 
 
 function App() {
@@ -50,6 +53,9 @@ function App() {
           <Route path="/InstituteDetails/:id" element={<InstituteDetails />} />
           <Route path="/search" element={<SearchResults />} />
           <Route path="/advanced-search" element={<AdvancedSearch />} />
+          <Route path="/about" element={<AboutUs />} />
+          <Route path="/contact" element={<ContactUs />} />
+          <Route path="/privacy-policy" element={<PrivacyPolicy />} />
         </Routes>
       </main>
       <Footer />
