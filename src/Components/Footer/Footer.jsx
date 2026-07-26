@@ -71,9 +71,11 @@ function Footer() {
           <span>© {new Date().getFullYear()} تنسيقي EGY — جميع الحقوق محفوظة</span>
           <span className="hidden sm:inline text-gray-300">|</span>
           <div className="flex flex-wrap items-center justify-center text-gray-500 gap-x-4 gap-y-1">
-            <Link to="/about" className="hover:text-brand-700 hover:scale-110  transition-all duration-200">من نحن</Link>
-            <Link to="/contact" className="hover:text-brand-700 hover:scale-110 transition-colors transition-all duration-200">اتصل بنا</Link>
-            <Link to="/privacy-policy" className="hover:text-brand-700 hover:scale-110 transition-colors transition-all duration-200">سياسة الخصوصية</Link>
+            <Link to="/about" className="hover:text-brand-700 hover:scale-110 transition-all duration-200">من نحن</Link>
+            <Link to="/contact" className="hover:text-brand-700 hover:scale-110 transition-all duration-200">اتصل بنا</Link>
+            <Link to="/faq" className="hover:text-brand-700 hover:scale-110 transition-all duration-200">الأسئلة الشائعة</Link>
+            <Link to="/privacy-policy" className="hover:text-brand-700 hover:scale-110 transition-all duration-200">سياسة الخصوصية</Link>
+            <Link to="/terms" className="hover:text-brand-700 hover:scale-110 transition-all duration-200">شروط الاستخدام</Link>
           </div>
         </div>
       </div>

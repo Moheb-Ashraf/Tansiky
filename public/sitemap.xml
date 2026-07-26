@@ -44,7 +44,19 @@
   </url>
   <url>
     <loc>https://tansiqyegy.vercel.app/privacy-policy</loc>
-    <lastmod>2026-05-23</lastmod>
+    <lastmod>2026-07-26</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://tansiqyegy.vercel.app/faq</loc>
+    <lastmod>2026-07-26</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://tansiqyegy.vercel.app/terms</loc>
+    <lastmod>2026-07-26</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.5</priority>
   </url>

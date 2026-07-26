@@ -23,6 +23,7 @@ export default function Navbar({ theme, onToggleTheme }) {
       child: ["/Universities", "/university", "/Institutes", "/InstituteDetails", "/college", "/department"],
     },
     { name: "بحث مخصص لك", path: "/advanced-search" },
+    { name: "الأسئلة الشائعة", path: "/faq" },
   ];
 
   const isActive = (link) => {

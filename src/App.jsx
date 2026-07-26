@@ -18,6 +18,8 @@ import ChatWidget from "./Components/Chatwidget/Chatwidget";
 import AboutUs from "./Pages/AboutUs/AboutUs";
 import ContactUs from "./Pages/ContactUs/ContactUs";
 import PrivacyPolicy from "./Pages/PrivacyPolicy/PrivacyPolicy";
+import FAQ from "./Pages/FAQ/FAQ";
+import Terms from "./Pages/Terms/Terms";
 
 
 function App() {
@@ -56,6 +58,8 @@ function App() {
           <Route path="/about" element={<AboutUs />} />
           <Route path="/contact" element={<ContactUs />} />
           <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+          <Route path="/faq" element={<FAQ />} />
+          <Route path="/terms" element={<Terms />} />
         </Routes>
       </main>
       <Footer />
