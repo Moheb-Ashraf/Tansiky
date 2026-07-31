@@ -24,6 +24,7 @@ export default function Navbar({ theme, onToggleTheme }) {
     },
     { name: "بحث مخصص لك", path: "/advanced-search" },
     { name: "الأسئلة الشائعة", path: "/faq" },
+    { name: "قاموس المصطلحات", path: "/glossary" },
   ];
 
   const isActive = (link) => {

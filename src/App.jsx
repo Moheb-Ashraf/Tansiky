@@ -20,6 +20,7 @@ import ContactUs from "./Pages/ContactUs/ContactUs";
 import PrivacyPolicy from "./Pages/PrivacyPolicy/PrivacyPolicy";
 import FAQ from "./Pages/FAQ/FAQ";
 import Terms from "./Pages/Terms/Terms";
+import Glossary from "./Pages/Glossary/Glossary";
 
 
 function App() {
@@ -60,6 +61,7 @@ function App() {
           <Route path="/privacy-policy" element={<PrivacyPolicy />} />
           <Route path="/faq" element={<FAQ />} />
           <Route path="/terms" element={<Terms />} />
+          <Route path="/glossary" element={<Glossary />} />
         </Routes>
       </main>
       <Footer />

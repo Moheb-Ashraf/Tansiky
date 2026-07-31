@@ -74,6 +74,7 @@ function Footer() {
             <Link to="/about" className="hover:text-brand-700 hover:scale-110 transition-all duration-200">من نحن</Link>
             <Link to="/contact" className="hover:text-brand-700 hover:scale-110 transition-all duration-200">اتصل بنا</Link>
             <Link to="/faq" className="hover:text-brand-700 hover:scale-110 transition-all duration-200">الأسئلة الشائعة</Link>
+            <Link to="/glossary" className="hover:text-brand-700 hover:scale-110 transition-all duration-200">قاموس المصطلحات</Link>
             <Link to="/privacy-policy" className="hover:text-brand-700 hover:scale-110 transition-all duration-200">سياسة الخصوصية</Link>
             <Link to="/terms" className="hover:text-brand-700 hover:scale-110 transition-all duration-200">شروط الاستخدام</Link>
           </div>
