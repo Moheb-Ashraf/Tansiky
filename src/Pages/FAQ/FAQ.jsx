@@ -102,6 +102,20 @@ export default function FAQ() {
           name="description"
           content="دليل الإجابات الشامل لجميع استفسارات تنسيق الجامعات المصرية، الحدود الدنيا، تقليل الاغتراب، واختبارات القدرات."
         />
+        <script type="application/ld+json">
+          {JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "FAQPage",
+            "mainEntity": FAQ_DATA.map((faq) => ({
+              "@type": "Question",
+              "name": faq.question,
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": faq.answer,
+              },
+            })),
+          })}
+        </script>
       </Helmet>
 
       <div className="bg-app-bg min-h-screen py-10 px-4 theme-page-pad md:px-8 lg:px-16" dir="rtl">
