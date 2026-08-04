@@ -61,6 +61,13 @@ export default function AdvancedSearch() {
     return universityTypes.find(t => t.id === item.type)?.name || "جامعة";
   };
 
+  const getResultTitle = (item) => {
+    if (item.universityId) {
+      return `${item.nameAr} - ${item.university?.nameAr || ""}`;
+    }
+    return item.nameAr;
+  };
+
   const handleSearch = async (e) => {
     if (e) e.preventDefault();
     try {
@@ -92,6 +99,7 @@ export default function AdvancedSearch() {
       }
 
       setResults(finalData);
+      
       
 
       if (finalData.length === 0) {
@@ -154,14 +162,14 @@ export default function AdvancedSearch() {
                 </select>
               </div>
 
-              <div>
+              {/* <div>
                 <label className="block text-sm font-bold theme-subtle mb-2 mr-2">نوع الدراسة</label>
                 <select name="studyType" value={filters.studyType} onChange={handleChange}
                   className="theme-input w-full p-4 rounded-2xl outline-none cursor-pointer">
                   <option value="">كل الشعب</option>
                   {studyTypes.map(s => <option key={s.id} value={s.id}>{s.name}</option>)}
                 </select>
-              </div>
+              </div> */}
 
               <div>
                 <label className="block text-sm font-bold theme-subtle mb-2 mr-2">المحافظة</label>
@@ -229,7 +237,7 @@ export default function AdvancedSearch() {
                       </span>
                     </div>
 
-                    <h3 className="theme-heading text-xl font-black mb-2 leading-tight">{item.nameAr}</h3>
+                    <h3 className="theme-heading text-xl font-black mb-2 leading-tight">{getResultTitle(item)}</h3>
                     <p className="theme-subtle text-sm mb-6 line-clamp-2 italic">
                       {item.description || "لا يوجد وصف متاح."}
                     </p>
